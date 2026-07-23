@@ -9,8 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as FrameworkRouteImport } from './routes/framework'
+import { Route as CriteriaRouteImport } from './routes/criteria'
 import { Route as IndexRouteImport } from './routes/index'
 
+const FrameworkRoute = FrameworkRouteImport.update({
+  id: '/framework',
+  path: '/framework',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CriteriaRoute = CriteriaRouteImport.update({
+  id: '/criteria',
+  path: '/criteria',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +31,50 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/criteria': typeof CriteriaRoute
+  '/framework': typeof FrameworkRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/criteria': typeof CriteriaRoute
+  '/framework': typeof FrameworkRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/criteria': typeof CriteriaRoute
+  '/framework': typeof FrameworkRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/criteria' | '/framework'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/criteria' | '/framework'
+  id: '__root__' | '/' | '/criteria' | '/framework'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CriteriaRoute: typeof CriteriaRoute
+  FrameworkRoute: typeof FrameworkRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/framework': {
+      id: '/framework'
+      path: '/framework'
+      fullPath: '/framework'
+      preLoaderRoute: typeof FrameworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/criteria': {
+      id: '/criteria'
+      path: '/criteria'
+      fullPath: '/criteria'
+      preLoaderRoute: typeof CriteriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +87,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CriteriaRoute: CriteriaRoute,
+  FrameworkRoute: FrameworkRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
