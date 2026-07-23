@@ -9,10 +9,34 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as Module6RouteImport } from './routes/module-6'
+import { Route as Module5RouteImport } from './routes/module-5'
+import { Route as Module4RouteImport } from './routes/module-4'
+import { Route as Module3RouteImport } from './routes/module-3'
 import { Route as FrameworkRouteImport } from './routes/framework'
 import { Route as CriteriaRouteImport } from './routes/criteria'
 import { Route as IndexRouteImport } from './routes/index'
 
+const Module6Route = Module6RouteImport.update({
+  id: '/module-6',
+  path: '/module-6',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Module5Route = Module5RouteImport.update({
+  id: '/module-5',
+  path: '/module-5',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Module4Route = Module4RouteImport.update({
+  id: '/module-4',
+  path: '/module-4',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Module3Route = Module3RouteImport.update({
+  id: '/module-3',
+  path: '/module-3',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FrameworkRoute = FrameworkRouteImport.update({
   id: '/framework',
   path: '/framework',
@@ -33,34 +57,100 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/criteria': typeof CriteriaRoute
   '/framework': typeof FrameworkRoute
+  '/module-3': typeof Module3Route
+  '/module-4': typeof Module4Route
+  '/module-5': typeof Module5Route
+  '/module-6': typeof Module6Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/criteria': typeof CriteriaRoute
   '/framework': typeof FrameworkRoute
+  '/module-3': typeof Module3Route
+  '/module-4': typeof Module4Route
+  '/module-5': typeof Module5Route
+  '/module-6': typeof Module6Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/criteria': typeof CriteriaRoute
   '/framework': typeof FrameworkRoute
+  '/module-3': typeof Module3Route
+  '/module-4': typeof Module4Route
+  '/module-5': typeof Module5Route
+  '/module-6': typeof Module6Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/criteria' | '/framework'
+  fullPaths:
+    | '/'
+    | '/criteria'
+    | '/framework'
+    | '/module-3'
+    | '/module-4'
+    | '/module-5'
+    | '/module-6'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/criteria' | '/framework'
-  id: '__root__' | '/' | '/criteria' | '/framework'
+  to:
+    | '/'
+    | '/criteria'
+    | '/framework'
+    | '/module-3'
+    | '/module-4'
+    | '/module-5'
+    | '/module-6'
+  id:
+    | '__root__'
+    | '/'
+    | '/criteria'
+    | '/framework'
+    | '/module-3'
+    | '/module-4'
+    | '/module-5'
+    | '/module-6'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CriteriaRoute: typeof CriteriaRoute
   FrameworkRoute: typeof FrameworkRoute
+  Module3Route: typeof Module3Route
+  Module4Route: typeof Module4Route
+  Module5Route: typeof Module5Route
+  Module6Route: typeof Module6Route
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/module-6': {
+      id: '/module-6'
+      path: '/module-6'
+      fullPath: '/module-6'
+      preLoaderRoute: typeof Module6RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/module-5': {
+      id: '/module-5'
+      path: '/module-5'
+      fullPath: '/module-5'
+      preLoaderRoute: typeof Module5RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/module-4': {
+      id: '/module-4'
+      path: '/module-4'
+      fullPath: '/module-4'
+      preLoaderRoute: typeof Module4RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/module-3': {
+      id: '/module-3'
+      path: '/module-3'
+      fullPath: '/module-3'
+      preLoaderRoute: typeof Module3RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/framework': {
       id: '/framework'
       path: '/framework'
@@ -89,6 +179,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CriteriaRoute: CriteriaRoute,
   FrameworkRoute: FrameworkRoute,
+  Module3Route: Module3Route,
+  Module4Route: Module4Route,
+  Module5Route: Module5Route,
+  Module6Route: Module6Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
