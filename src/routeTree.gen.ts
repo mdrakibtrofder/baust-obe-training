@@ -9,14 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PoIndicatorsRouteImport } from './routes/po-indicators'
 import { Route as Module6RouteImport } from './routes/module-6'
 import { Route as Module5RouteImport } from './routes/module-5'
 import { Route as Module4RouteImport } from './routes/module-4'
 import { Route as Module3RouteImport } from './routes/module-3'
 import { Route as FrameworkRouteImport } from './routes/framework'
 import { Route as CriteriaRouteImport } from './routes/criteria'
+import { Route as AppendicesRouteImport } from './routes/appendices'
 import { Route as IndexRouteImport } from './routes/index'
 
+const PoIndicatorsRoute = PoIndicatorsRouteImport.update({
+  id: '/po-indicators',
+  path: '/po-indicators',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Module6Route = Module6RouteImport.update({
   id: '/module-6',
   path: '/module-6',
@@ -47,6 +54,11 @@ const CriteriaRoute = CriteriaRouteImport.update({
   path: '/criteria',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppendicesRoute = AppendicesRouteImport.update({
+  id: '/appendices',
+  path: '/appendices',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -55,74 +67,95 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/appendices': typeof AppendicesRoute
   '/criteria': typeof CriteriaRoute
   '/framework': typeof FrameworkRoute
   '/module-3': typeof Module3Route
   '/module-4': typeof Module4Route
   '/module-5': typeof Module5Route
   '/module-6': typeof Module6Route
+  '/po-indicators': typeof PoIndicatorsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/appendices': typeof AppendicesRoute
   '/criteria': typeof CriteriaRoute
   '/framework': typeof FrameworkRoute
   '/module-3': typeof Module3Route
   '/module-4': typeof Module4Route
   '/module-5': typeof Module5Route
   '/module-6': typeof Module6Route
+  '/po-indicators': typeof PoIndicatorsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/appendices': typeof AppendicesRoute
   '/criteria': typeof CriteriaRoute
   '/framework': typeof FrameworkRoute
   '/module-3': typeof Module3Route
   '/module-4': typeof Module4Route
   '/module-5': typeof Module5Route
   '/module-6': typeof Module6Route
+  '/po-indicators': typeof PoIndicatorsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/appendices'
     | '/criteria'
     | '/framework'
     | '/module-3'
     | '/module-4'
     | '/module-5'
     | '/module-6'
+    | '/po-indicators'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/appendices'
     | '/criteria'
     | '/framework'
     | '/module-3'
     | '/module-4'
     | '/module-5'
     | '/module-6'
+    | '/po-indicators'
   id:
     | '__root__'
     | '/'
+    | '/appendices'
     | '/criteria'
     | '/framework'
     | '/module-3'
     | '/module-4'
     | '/module-5'
     | '/module-6'
+    | '/po-indicators'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppendicesRoute: typeof AppendicesRoute
   CriteriaRoute: typeof CriteriaRoute
   FrameworkRoute: typeof FrameworkRoute
   Module3Route: typeof Module3Route
   Module4Route: typeof Module4Route
   Module5Route: typeof Module5Route
   Module6Route: typeof Module6Route
+  PoIndicatorsRoute: typeof PoIndicatorsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/po-indicators': {
+      id: '/po-indicators'
+      path: '/po-indicators'
+      fullPath: '/po-indicators'
+      preLoaderRoute: typeof PoIndicatorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/module-6': {
       id: '/module-6'
       path: '/module-6'
@@ -165,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CriteriaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/appendices': {
+      id: '/appendices'
+      path: '/appendices'
+      fullPath: '/appendices'
+      preLoaderRoute: typeof AppendicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -177,23 +217,15 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppendicesRoute: AppendicesRoute,
   CriteriaRoute: CriteriaRoute,
   FrameworkRoute: FrameworkRoute,
   Module3Route: Module3Route,
   Module4Route: Module4Route,
   Module5Route: Module5Route,
   Module6Route: Module6Route,
+  PoIndicatorsRoute: PoIndicatorsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
