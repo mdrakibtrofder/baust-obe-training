@@ -177,17 +177,48 @@ export function SiteHeader() {
   );
 }
 
+const importantLinks: { label: string; href: string }[] = [
+  { label: "BAETE", href: "https://www.baetebangladesh.org/" },
+  { label: "BAUST", href: "https://www.baust.edu.bd/" },
+  { label: "IQAC, BAUST", href: "https://baust.edu.bd/iqac/" },
+  { label: "Developer", href: "https://mdrakibtrofder.github.io/" },
+];
+
 export function SiteFooter() {
+  const year = new Date().getFullYear();
   return (
     <footer className="border-t border-border mt-24">
-      <div className="mx-auto max-w-7xl px-5 lg:px-8 py-10 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+      <div className="mx-auto max-w-7xl px-5 lg:px-8 py-10 flex flex-col md:flex-row gap-8 justify-between items-start">
         <div>
           <div className="font-display text-lg text-ink">OBE Training</div>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-muted-foreground mt-1 max-w-sm">
             Hands-on training reference for Outcome-Based Education and BAETE accreditation.
           </div>
         </div>
 
+        <div className="md:text-right">
+          <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold mb-2">Important Links</div>
+          <ul className="flex flex-col md:items-end gap-1.5">
+            {importantLinks.map((l) => (
+              <li key={l.label}>
+                <a
+                  href={l.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm text-foreground/80 hover:text-primary transition-colors"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className="border-t border-border">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8 py-5 text-center text-xs text-muted-foreground">
+          © {year} Bangladesh Army University of Science and Technology, Saidpur. All Rights Reserved.
+        </div>
       </div>
     </footer>
   );
