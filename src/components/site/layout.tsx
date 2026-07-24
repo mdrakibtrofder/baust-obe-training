@@ -1,16 +1,100 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { useState, type ReactNode } from "react";
-import { Menu, X, GraduationCap } from "lucide-react";
+import { useState, useRef, useEffect, type ReactNode } from "react";
+import { Menu, X, GraduationCap, ChevronDown } from "lucide-react";
 
-const nav = [
+type NavItem = { to: string; label: string };
+type NavGroup = { label: string; items: NavItem[] };
+
+const topNav: NavItem[] = [
   { to: "/", label: "Home" },
   { to: "/framework", label: "Framework" },
   { to: "/criteria", label: "Criteria" },
-  { to: "/module-3", label: "Module 3" },
-  { to: "/module-4", label: "Module 4" },
-  { to: "/module-5", label: "Module 5" },
-  { to: "/module-6", label: "Module 6" },
 ];
+
+const modulesGroup: NavGroup = {
+  label: "Modules",
+  items: [
+    { to: "/module-3", label: "Module 3 · Teaching & Assessment" },
+    { to: "/module-4", label: "Module 4 · CQI" },
+    { to: "/module-5", label: "Module 5 · CEP & CEA" },
+    { to: "/module-6", label: "Module 6 · Outcome Attainment" },
+  ],
+};
+
+const referencesGroup: NavGroup = {
+  label: "References",
+  items: [
+    { to: "/po-indicators", label: "PO Indicators" },
+    { to: "/appendices", label: "Appendices (Bloom's + v2.2→v3.0)" },
+  ],
+};
+
+const sarGroup: NavGroup = {
+  label: "SAR Template",
+  items: [
+    { to: "/sar", label: "Overview & Guidelines" },
+    { to: "/sar/criterion-1", label: "Criterion 1 · PEOs" },
+    { to: "/sar/criterion-2", label: "Criterion 2 · POs & Assessment" },
+    { to: "/sar/criterion-3", label: "Criterion 3 · Curriculum" },
+    { to: "/sar/criterion-4", label: "Criterion 4 · Industry" },
+    { to: "/sar/criterion-5", label: "Criterion 5 · CQI" },
+    { to: "/sar/criterion-6", label: "Criterion 6 · Students" },
+    { to: "/sar/criterion-7", label: "Criterion 7 · Faculty" },
+    { to: "/sar/criterion-8", label: "Criterion 8 · Governance, Finance & Safety" },
+    { to: "/sar/criterion-9", label: "Criterion 9 · Facilities" },
+    { to: "/sar/annexures", label: "Annexures A–M" },
+  ],
+};
+
+const allGroups = [modulesGroup, referencesGroup, sarGroup];
+
+function useOutsideClose(open: boolean, onClose: () => void) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) onClose();
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open, onClose]);
+  return ref;
+}
+
+function NavDropdown({ group, pathname }: { group: NavGroup; pathname: string }) {
+  const [open, setOpen] = useState(false);
+  const ref = useOutsideClose(open, () => setOpen(false));
+  const active = group.items.some((i) => pathname === i.to || pathname.startsWith(i.to + "/"));
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className={`inline-flex items-center gap-1 px-3 py-2 text-sm rounded-md transition-colors ${
+          active ? "bg-secondary text-secondary-foreground font-medium" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+        }`}
+      >
+        {group.label}
+        <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div className="absolute right-0 mt-1 min-w-[260px] rounded-lg border border-border bg-background shadow-[var(--shadow-lift)] p-1 z-50">
+          {group.items.map((i) => (
+            <Link
+              key={i.to}
+              to={i.to}
+              onClick={() => setOpen(false)}
+              className={`block px-3 py-2 rounded-md text-sm ${
+                pathname === i.to ? "bg-secondary text-secondary-foreground font-medium" : "text-foreground/85 hover:bg-muted"
+              }`}
+            >
+              {i.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function SiteHeader() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -30,7 +114,7 @@ export function SiteHeader() {
         </Link>
 
         <nav className="hidden lg:flex items-center gap-1">
-          {nav.map((n) => {
+          {topNav.map((n) => {
             const active = pathname === n.to;
             return (
               <Link
@@ -44,6 +128,9 @@ export function SiteHeader() {
               </Link>
             );
           })}
+          {allGroups.map((g) => (
+            <NavDropdown key={g.label} group={g} pathname={pathname} />
+          ))}
         </nav>
 
         <button
@@ -56,9 +143,9 @@ export function SiteHeader() {
       </div>
 
       {open && (
-        <div className="lg:hidden border-t border-border bg-background">
+        <div className="lg:hidden border-t border-border bg-background max-h-[70vh] overflow-auto">
           <div className="px-5 py-3 flex flex-col gap-1">
-            {nav.map((n) => (
+            {topNav.map((n) => (
               <Link
                 key={n.to}
                 to={n.to}
@@ -67,6 +154,21 @@ export function SiteHeader() {
               >
                 {n.label}
               </Link>
+            ))}
+            {allGroups.map((g) => (
+              <div key={g.label} className="mt-3">
+                <div className="px-3 py-1 text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">{g.label}</div>
+                {g.items.map((i) => (
+                  <Link
+                    key={i.to}
+                    to={i.to}
+                    onClick={() => setOpen(false)}
+                    className={`block px-3 py-2 rounded-md text-sm ${pathname === i.to ? "bg-secondary text-secondary-foreground font-medium" : "text-muted-foreground hover:bg-muted"}`}
+                  >
+                    {i.label}
+                  </Link>
+                ))}
+              </div>
             ))}
           </div>
         </div>
@@ -85,8 +187,8 @@ export function SiteFooter() {
             Hands-on training reference for Outcome-Based Education and BAETE accreditation.
           </div>
         </div>
-        <div className="text-xs text-muted-foreground">
-          Content sourced from BAETE Accreditation Criteria v3.0 and BAETE OBE Training Modules 3–6.
+        <div className="text-xs text-muted-foreground max-w-md md:text-right">
+          Content sourced verbatim from the BAETE Accreditation Criteria v3.0, PO Indicators (ACC-MAN-02-01), SAR Template (ACC-TMP-04-04-V3.0), and BAETE OBE Training Modules 3–6.
         </div>
       </div>
     </footer>
@@ -149,5 +251,20 @@ export function Section({
       )}
       {children}
     </section>
+  );
+}
+
+export function RelatedPages({ items }: { items: { to: string; label: string; desc?: string }[] }) {
+  return (
+    <Section eyebrow="Related" title="See also">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {items.map((it) => (
+          <Link key={it.to} to={it.to} className="card-elev p-5 hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift)] transition block">
+            <div className="font-display text-lg text-ink">{it.label}</div>
+            {it.desc && <p className="text-sm text-foreground/70 mt-1.5 leading-relaxed">{it.desc}</p>}
+          </Link>
+        ))}
+      </div>
+    </Section>
   );
 }

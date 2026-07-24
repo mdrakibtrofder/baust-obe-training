@@ -5,10 +5,10 @@ import { modules } from "@/lib/obe-data";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "OBE Training — Home" },
+      { title: "BAUST OBE Training" },
       { name: "description", content: "Learn Outcome-Based Education and BAETE accreditation through the framework tables, criteria, and Modules 3–6." },
-      { property: "og:title", content: "OBE Training — Home" },
-      { property: "og:description", content: "Interactive OBE training reference for engineering educators and accreditation teams." },
+      { property: "og:title", content: "BAUST OBE Training" },
+      { property: "og:description", content: "Learn Outcome-Based Education and BAETE accreditation through the framework tables, criteria, and Modules 3–6." },
     ],
   }),
   component: Home,
