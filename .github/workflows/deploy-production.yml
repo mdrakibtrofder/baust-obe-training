@@ -56,17 +56,17 @@ jobs:
       # For project pages at https://<user>.github.io/<repo>/ the
       # BASE_URL MUST match your repository name.
       #
-      # This repo is currently named "obe-training-hub" so the default
-      # below uses /obe-training-hub/. If you rename the repo to
+      # This repo is currently named "baust-obe-training" so the default
+      # below uses /baust-obe-training/. If you rename the repo to
       # "baust-obe-training" change this value to /baust-obe-training/.
       # ----------------------------------------------------------------
       - name: Build SPA
         env:
-          BASE_URL: /obe-training-hub/
+          BASE_URL: /baust-obe-training/
         run: bun run build:ghpages
 
       # SPA fallback trick for GitHub Pages: without this, deep links
-      # like /obe-training-hub/sar/criterion-3 return a 404 because
+      # like /baust-obe-training/sar/criterion-3 return a 404 because
       # Pages cannot find a matching static file. Copying index.html
       # to 404.html makes Pages serve our SPA on every unknown route,
       # then TanStack Router takes over and renders the right page.
