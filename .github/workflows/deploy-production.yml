@@ -26,14 +26,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # This project uses Bun as its package manager (committed lockfile
+      # is bun.lock, package-lock.json is gitignored) so we use the
+      # official Bun setup action and `bun install --frozen-lockfile`
+      # to get reproducible installs on CI. Node.js is still required
+      # because `bun run build:ghpages` invokes Vite under the hood.
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       # ----------------------------------------------------------------
       # Build the site as a pure client-side SPA using our simple
@@ -52,7 +61,7 @@ jobs:
       - name: Build SPA
         env:
           BASE_URL: /obe-training-hub/
-        run: npm run build:ghpages
+        run: bun run build:ghpages
 
       # SPA fallback trick for GitHub Pages: without this, deep links
       # like /obe-training-hub/sar/criterion-3 return a 404 because
