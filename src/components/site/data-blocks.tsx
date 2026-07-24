@@ -265,6 +265,168 @@ export function LearningPyramid({
   );
 }
 
+/** Large scrollable Course × PO/WK/WP/EA mapping matrix (Module 5's mapping-example slide). */
+export function MappingMatrix({
+  courses,
+  data,
+}: {
+  courses: string[];
+  data: Record<string, { pos: string[]; wks: string[]; wps: string[]; eas: string[] }>;
+}) {
+  const poHeaders = Array.from({ length: 12 }, (_, i) => `PO${i + 1}`);
+  const wkHeaders = Array.from({ length: 9 }, (_, i) => `WK${i + 1}`);
+  const wpHeaders = Array.from({ length: 7 }, (_, i) => `WP${i + 1}`);
+  const eaHeaders = Array.from({ length: 5 }, (_, i) => `EA${i + 1}`);
+  const groups: { label: string; headers: string[]; key: "pos" | "wks" | "wps" | "eas" }[] = [
+    { label: "Program Outcomes", headers: poHeaders, key: "pos" },
+    { label: "Knowledge Profile", headers: wkHeaders, key: "wks" },
+    { label: "Complex Engineering Problem Solving", headers: wpHeaders, key: "wps" },
+    { label: "Complex Engineering Activities", headers: eaHeaders, key: "eas" },
+  ];
+  return (
+    <div className="card-elev overflow-x-auto">
+      <table className="text-xs border-collapse min-w-[1100px]">
+        <thead>
+          <tr>
+            <th className="sticky left-0 bg-surface-2 px-3 py-2 border-b border-r border-border" rowSpan={2}></th>
+            {groups.map((g) => (
+              <th key={g.label} colSpan={g.headers.length} className="px-2 py-1.5 text-center font-semibold text-primary-foreground bg-primary border-b border-l border-border">
+                {g.label}
+              </th>
+            ))}
+          </tr>
+          <tr>
+            {groups.flatMap((g) =>
+              g.headers.map((h) => (
+                <th key={h} className="px-1.5 py-1.5 text-center text-muted-foreground font-medium border-b border-l border-border whitespace-nowrap bg-surface-2">
+                  {h}
+                </th>
+              )),
+            )}
+          </tr>
+        </thead>
+        <tbody>
+          {courses.map((course) => {
+            const row = data[course];
+            return (
+              <tr key={course} className="border-b border-border last:border-b-0">
+                <td className="sticky left-0 bg-background px-3 py-1.5 font-semibold text-ink border-r border-border whitespace-nowrap">{course}</td>
+                {groups.flatMap((g) =>
+                  row[g.key].map((cell, i) => (
+                    <td key={`${g.key}-${i}`} className="px-1.5 py-1.5 text-center border-l border-border text-accent font-bold">
+                      {cell}
+                    </td>
+                  )),
+                )}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/** Collapsible worked-example card: brief + WP/EA attribute justifications. */
+export function WorkedExampleCard({
+  title,
+  brief,
+  wps,
+  eas,
+  thinkingList,
+  defaultOpen,
+}: {
+  title: string;
+  brief: string;
+  wps: { code: string; justification: string }[];
+  eas: { code: string; justification: string }[];
+  thinkingList?: string[];
+  defaultOpen?: boolean;
+}) {
+  const [open, setOpen] = useState(!!defaultOpen);
+  return (
+    <div className="card-elev overflow-hidden">
+      <button onClick={() => setOpen((v) => !v)} className="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-secondary/40 transition-colors">
+        <span className="flex-1 font-display text-lg text-ink">{title}</span>
+        <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div className="px-5 pb-5 pt-1 border-t border-border space-y-4">
+          <p className="text-sm text-foreground/85 leading-relaxed">{brief}</p>
+          {wps.length > 0 && (
+            <div>
+              <h4 className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Which WPs are addressed?</h4>
+              <ul className="space-y-1.5">
+                {wps.map((w) => (
+                  <li key={w.code} className="text-sm flex gap-2">
+                    <span className="font-bold text-accent shrink-0">{w.code}:</span>
+                    <span className="text-foreground/80">{w.justification}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {eas.length > 0 && (
+            <div>
+              <h4 className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Which EAs are addressed?</h4>
+              <ul className="space-y-1.5">
+                {eas.map((e) => (
+                  <li key={e.code} className="text-sm flex gap-2">
+                    <span className="font-bold text-accent shrink-0">{e.code}:</span>
+                    <span className="text-foreground/80">{e.justification}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {thinkingList && thinkingList.length > 0 && (
+            <div>
+              <h4 className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Things to think through</h4>
+              <BulletList items={thinkingList} />
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Simple horizontal bar chart for PO attainment results, with a threshold marker. */
+export function PoBarChart({
+  data,
+  threshold = 50,
+}: {
+  data: { po: string; pct: number }[];
+  threshold?: number;
+}) {
+  return (
+    <div className="card-elev p-5">
+      <div className="space-y-2">
+        {data.map((d) => {
+          const attained = d.pct >= threshold;
+          return (
+            <div key={d.po} className="flex items-center gap-3">
+              <div className="w-12 text-xs font-semibold text-ink shrink-0">{d.po}</div>
+              <div className="flex-1 h-5 rounded bg-surface-2 relative overflow-hidden">
+                <div
+                  className={`h-full rounded ${attained ? "bg-primary" : "bg-[oklch(0.6_0.2_25)]"}`}
+                  style={{ width: `${d.pct}%` }}
+                />
+                <div
+                  className="absolute top-0 bottom-0 border-l-2 border-dashed border-accent"
+                  style={{ left: `${threshold}%` }}
+                />
+              </div>
+              <div className="w-12 text-xs font-bold text-ink text-right shrink-0">{d.pct}%</div>
+            </div>
+          );
+        })}
+      </div>
+      <p className="mt-4 text-xs text-muted-foreground">Dashed line marks the {threshold}% attainment threshold. Bars in orange fall below it.</p>
+    </div>
+  );
+}
+
 export function BulletList({ items }: { items: (string | ReactNode)[] }) {
   return (
     <ul className="space-y-2">

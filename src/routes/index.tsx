@@ -15,10 +15,10 @@ export const Route = createFileRoute("/")({
 });
 
 const whatsInside = [
-  { icon: Layers, label: "Framework", detail: "WK1–WK9 · WP1–WP7 · EA1–EA5 · 12 POs" },
-  { icon: BookOpen, label: "Criteria", detail: "9 accreditation criteria, verbatim" },
-  { icon: Compass, label: "Modules 3–6", detail: "Teaching, CQI, CEP/CEA, attainment" },
-  { icon: ClipboardList, label: "SAR Template", detail: "9 criteria + Annexures A–M" },
+  { icon: Layers, label: "Framework", detail: "WK1–WK9 · WP1–WP7 · EA1–EA5 · 12 POs", to: "/framework" },
+  { icon: BookOpen, label: "Criteria", detail: "9 accreditation criteria, verbatim", to: "/criteria" },
+  { icon: Compass, label: "Modules 3–6", detail: "Teaching, CQI, CEP/CEA, attainment", to: "/module-3" },
+  { icon: ClipboardList, label: "SAR Template", detail: "9 criteria + Annexures A–M", to: "/sar" },
 ];
 
 const moduleIcons: Record<string, typeof BookOpen> = {
@@ -78,13 +78,20 @@ function Home() {
       <section className="mx-auto max-w-7xl px-5 lg:px-8 py-14">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {whatsInside.map((w) => (
-            <div key={w.label} className="card-elev p-5">
-              <div className="grid place-items-center h-9 w-9 rounded-lg bg-primary/10 text-primary mb-3">
-                <w.icon className="h-4 w-4" />
+            <Link
+              key={w.label}
+              to={w.to}
+              className="group card-elev p-5 block hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift)] transition"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="grid place-items-center h-9 w-9 rounded-lg bg-primary/10 text-primary">
+                  <w.icon className="h-4 w-4" />
+                </div>
+                <ArrowRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
               </div>
               <div className="font-display text-lg text-ink">{w.label}</div>
               <div className="text-xs text-muted-foreground mt-1 leading-relaxed">{w.detail}</div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -156,9 +163,11 @@ function Home() {
 
         {moduleCategories.map((cat) => (
           <div key={cat} className="mb-12 last:mb-0">
-            <div className="flex items-baseline justify-between mb-5">
+            <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
               <h3 className="font-display text-2xl text-ink">{cat}</h3>
-              <p className="text-sm text-muted-foreground max-w-md text-right hidden md:block">{categoryBlurb[cat]}</p>
+              <span className="inline-flex items-center px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-medium text-right sm:text-left max-w-full sm:max-w-md">
+                {categoryBlurb[cat]}
+              </span>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
               {modules.filter((m) => m.category === cat).map((m) => {

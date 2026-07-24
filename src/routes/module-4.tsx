@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHeader, Section } from "@/components/site/layout";
+import { PageHeader, Section, RelatedPages } from "@/components/site/layout";
 import { InfoCard, BulletList, StepList } from "@/components/site/data-blocks";
 
 export const Route = createFileRoute("/module-4")({
@@ -49,6 +49,33 @@ function Module4() {
           <InfoCard title="1. Feedback"><p>Feedback from stakeholders to collect assessment data.</p></InfoCard>
           <InfoCard title="2. Analysis"><p>Analysis of assessment data.</p></InfoCard>
           <InfoCard title="3. Action"><p>Improvement / action plan.</p></InfoCard>
+        </div>
+      </Section>
+
+      <Section eyebrow="How it connects" title="OBE → OBA → CQI">
+        <p className="text-sm text-foreground/80 mb-6 max-w-2xl">CQI is the link between Outcome-Based Education (the curriculum design) and Outcome-Based Assessment (measuring what students actually attained). Each feeds the next in a continuous triangle.</p>
+        <div className="flex justify-center">
+          <svg viewBox="0 0 360 300" className="w-full max-w-sm" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="tri-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 z" fill="var(--accent, #d97706)" />
+              </marker>
+            </defs>
+            <path d="M180,70 A120,120 0 0,1 300,220" fill="none" stroke="var(--accent, #d97706)" strokeWidth="2.5" markerEnd="url(#tri-arrow)" />
+            <path d="M280,235 A120,120 0 0,1 80,235" fill="none" stroke="var(--accent, #d97706)" strokeWidth="2.5" markerEnd="url(#tri-arrow)" />
+            <path d="M60,220 A120,120 0 0,1 180,70" fill="none" stroke="var(--accent, #d97706)" strokeWidth="2.5" markerEnd="url(#tri-arrow)" />
+            <g fontFamily="system-ui,sans-serif">
+              <circle cx="180" cy="55" r="46" fill="var(--primary, #1d4ed8)" />
+              <text x="180" y="50" textAnchor="middle" fontSize="14" fontWeight="700" fill="white">OBE</text>
+              <text x="180" y="66" textAnchor="middle" fontSize="9" fill="white">(Education)</text>
+              <circle cx="300" cy="235" r="46" fill="var(--chart-3, #059669)" />
+              <text x="300" y="230" textAnchor="middle" fontSize="12" fontWeight="700" fill="white">CQI</text>
+              <text x="300" y="245" textAnchor="middle" fontSize="8" fill="white">(Quality Improvement)</text>
+              <circle cx="60" cy="235" r="46" fill="var(--chart-4, #b45309)" />
+              <text x="60" y="230" textAnchor="middle" fontSize="14" fontWeight="700" fill="white">OBA</text>
+              <text x="60" y="245" textAnchor="middle" fontSize="9" fill="white">(Assessment)</text>
+            </g>
+          </svg>
         </div>
       </Section>
 
@@ -190,6 +217,11 @@ function Module4() {
           ]} />
         </InfoCard></div>
       </Section>
+
+      <RelatedPages items={[
+        { to: "/module-6", label: "Module 6 · Outcome Attainment", desc: "How CO/PO/PEO CQI loops connect to measured attainment." },
+        { to: "/sar/criterion-5", label: "SAR · Criterion 5 · CQI", desc: "How to write up your CQI processes for the accreditation SAR." },
+      ]} />
     </>
   );
 }

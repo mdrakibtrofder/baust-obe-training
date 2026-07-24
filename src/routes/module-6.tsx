@@ -1,6 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHeader, Section } from "@/components/site/layout";
-import { InfoCard, DataTable, BulletList } from "@/components/site/data-blocks";
+import { PageHeader, Section, RelatedPages } from "@/components/site/layout";
+import { InfoCard, DataTable, BulletList, PoBarChart } from "@/components/site/data-blocks";
+import {
+  module6QuestionCoMapping, questionMappingGoodPractices, module6LabExample, module6LabRubric,
+  coAttainmentRoster, poCalcEqualLevel, poCalcCourseMap, poResult, cepCeaClassification, cqiFeedbackTable,
+} from "@/lib/module-extras";
 
 export const Route = createFileRoute("/module-6")({
   head: () => ({
@@ -88,6 +92,15 @@ function Module6() {
         </div>
       </Section>
 
+      <Section eyebrow="Question mapping" title="Mapping questions to COs">
+        <p className="text-sm text-foreground/80 mb-4">All assessments (CT, assignments, mid, final) that are considered must map to the COs, so the question paper's coverage and balance can be checked.</p>
+        <DataTable headers={["CO", "Mid", "Final", "Assignment"]} rows={module6QuestionCoMapping} />
+        <div className="mt-6">
+          <h3 className="font-display text-lg text-ink mb-3">Good practice</h3>
+          <BulletList items={questionMappingGoodPractices} />
+        </div>
+      </Section>
+
       <Section eyebrow="Theory course example" title="Example CO-PO mapping (Electronics)">
         <DataTable
           headers={["CO", "Description", "PO", "K/P/A", "Bloom Domain & level", "Delivery Methods", "Assessment Tools"]}
@@ -113,12 +126,30 @@ function Module6() {
         </div>
       </Section>
 
+      <Section eyebrow="Worked example" title="CO assessment in a lab course (Electronics)">
+        <DataTable
+          headers={["CO", "Description", "PO", "K/P/A", "Delivery", "Assessment Tools"]}
+          rows={module6LabExample.cos.map((c) => [c.code, c.desc, c.po, c.kpa, c.delivery, c.tools])}
+        />
+        <div className="mt-6">
+          <h3 className="font-display text-lg text-ink mb-3">Assessment breakdown</h3>
+          <DataTable headers={["Assessment Item", "Weight", "CO Coverage"]} rows={module6LabExample.breakdown} />
+        </div>
+      </Section>
+
       <Section eyebrow="Rubrics" title="Use of rubrics">
         <p className="text-sm text-foreground/85 mb-4">Rubrics are required for the following assessments:</p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {["Report","Viva","Individual / group project","Project report","Weekly programming / hardware assignments"].map((r) => (
             <div key={r} className="card-elev p-4 text-sm font-medium text-ink text-center">{r}</div>
           ))}
+        </div>
+        <div className="mt-6">
+          <h3 className="font-display text-lg text-ink mb-3">Worked example — Assessment Rubrics of a Lab Project</h3>
+          <DataTable
+            headers={["Assessment Item", "Marks", "Criteria / Remarks", "CO-PO", "K/P/A"]}
+            rows={module6LabRubric.map((r) => [r.item, r.marks, r.criteria, r.coPo, r.kpa])}
+          />
         </div>
       </Section>
 
@@ -131,9 +162,27 @@ function Module6() {
             <p>If 50% (set by Program) of students in a course attain a CO, that CO is attained for the course.</p>
           </InfoCard>
         </div>
+        <div className="mt-6">
+          <h3 className="font-display text-lg text-ink mb-3">Worked example — 10-student roster, threshold 55%</h3>
+          <DataTable
+            headers={["Student", "CO1", "CO2", "CO3", "CO4"]}
+            rows={coAttainmentRoster.students.map((s) => [s.id, ...s.scores.map(String)])}
+          />
+          <div className="mt-3">
+            <DataTable
+              headers={["", "CO1", "CO2", "CO3", "CO4"]}
+              rows={[["% attained", ...coAttainmentRoster.attained.map((p) => `${p}%`)]]}
+            />
+          </div>
+          <p className="mt-3 text-sm text-muted-foreground">CO2 falls below the 50% course-level attainment criterion for this cohort — a candidate for course-level CQI action.</p>
+        </div>
       </Section>
 
       <Section eyebrow="PO attainment" title="Demonstrating CEP & CEA">
+        <div className="mb-6">
+          <h3 className="font-display text-lg text-ink mb-3">POs: CEP and CEA classification</h3>
+          <DataTable headers={["PO", "Label", "Classification"]} rows={cepCeaClassification.map((p) => [p.code, p.label, p.tag])} />
+        </div>
         <BulletList items={[
           "CEP is already embedded in the definition of some POs.",
           "For POs with CEP/CEA in their definition, assessment tools used must be demonstrated as CEP/CEA through proper mappings.",
@@ -165,6 +214,20 @@ function Module6() {
         </InfoCard>
       </Section>
 
+      <Section eyebrow="Worked example" title="PO Calculation — Equal-Level vs Weighted-Level">
+        <p className="text-sm text-foreground/80 mb-4">A simple equal-level model treats every CO the same; a weighted-level model gives higher Bloom levels more weight in the calculation. The weighted model needs more curriculum-design and assessment complexity to implement correctly.</p>
+        <DataTable headers={["Course", "CO", "Domain", "Level"]} rows={poCalcEqualLevel.map((r) => [r.course, r.co, r.domain, String(r.level)])} />
+        <div className="mt-6">
+          <h3 className="font-display text-lg text-ink mb-3">Course-to-PO mapping used to aggregate a PO score</h3>
+          <DataTable headers={["Course", "CO1 → PO", "CO2 → PO", "CO3 → PO"]} rows={poCalcCourseMap} />
+        </div>
+        <div className="mt-6">
+          <h3 className="font-display text-lg text-ink mb-3">Resulting PO report for the cohort</h3>
+          <PoBarChart data={poResult} threshold={50} />
+          <p className="mt-3 text-sm text-muted-foreground">Only PO1 falls below the 50% threshold for this cohort — every other PO is attained.</p>
+        </div>
+      </Section>
+
       <Section eyebrow="PEO attainment" title="Assessing PEO">
         <BulletList items={[
           "PEOs address graduates' attainment around 3–5 years after graduation.",
@@ -187,6 +250,10 @@ function Module6() {
             <p>The program must complete the CQI loops periodically. CQI loops should be a regular practice — not something done only before an accreditation visit.</p>
           </InfoCard>
         </div>
+        <div className="mt-6">
+          <h3 className="font-display text-lg text-ink mb-3">CQI area → primary feedback source</h3>
+          <DataTable headers={["CQI Area", "Primary Feedback Source"]} rows={cqiFeedbackTable} />
+        </div>
       </Section>
 
       <Section eyebrow="Summary" title="What matters most">
@@ -197,6 +264,12 @@ function Module6() {
           "Assessment of outcome attainment is vital for CQI.",
         ]} />
       </Section>
+
+      <RelatedPages items={[
+        { to: "/module-3", label: "Module 3 · PO Assessment write-ups", desc: "Worked write-ups for PO1, PO8 and PO9 attainment." },
+        { to: "/module-5", label: "Module 5 · CEP & CEA", desc: "The attribute definitions behind the CEP/CEA classification above." },
+        { to: "/sar/criterion-2", label: "SAR · Criterion 2 attainment prompts", desc: "The exact PO1–PO12 write-up prompts a SAR must answer." },
+      ]} />
     </>
   );
 }
