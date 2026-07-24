@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader, Section } from "@/components/site/layout";
-import { InfoCard, DataTable, BulletList } from "@/components/site/data-blocks";
+import { InfoCard, DataTable, BulletList, PsychomotorGrid, CognitiveVerbGrid, LearningPyramid } from "@/components/site/data-blocks";
+import { psychomotorDomainGrid, cognitiveActionVerbsGrid, learningPyramidLevels } from "@/lib/module-extras";
 
 export const Route = createFileRoute("/module-3")({
   head: () => ({
@@ -216,6 +217,16 @@ function Module3() {
         <DataTable headers={["Level", "Learning Activities", "Assessment"]} rows={psychomotor} />
       </Section>
 
+      <Section eyebrow="Psychomotor domain" title="Full definitions and action verbs (P1–P7)">
+        <p className="text-sm text-foreground/80 mb-4">Perception through Origination — the complete seven-category psychomotor scale with each category's description and its associated action verbs.</p>
+        <PsychomotorGrid rows={psychomotorDomainGrid} />
+      </Section>
+
+      <Section eyebrow="Cognitive domain" title="Action verbs by Bloom's level">
+        <p className="text-sm text-foreground/80 mb-4">A quick-reference verb bank for writing Course Outcomes and exam questions at the intended cognitive level.</p>
+        <CognitiveVerbGrid rows={cognitiveActionVerbsGrid} />
+      </Section>
+
       <Section eyebrow="CO assessment" title="Assessment in theory and lab courses">
         <div className="grid md:grid-cols-2 gap-5">
           <InfoCard title="Theory courses">
@@ -253,18 +264,7 @@ function Module3() {
       </Section>
 
       <Section eyebrow="Learning pyramid" title="People generally remember...">
-        <DataTable
-          headers={["Learning Activity", "Percentage Recalled", "Outcomes Enabled"]}
-          rows={[
-            ["Read", "10% of what they read", "Define, List, Describe, Explain"],
-            ["Hear", "20% of what they hear", ""],
-            ["View Images", "30% of what they see", ""],
-            ["Watch Videos, Attend Exhibits/Sites", "50% of what they see and hear", "Demonstrate, Apply, Practice"],
-            ["Watch a Demonstration", "70% of what they say and write", ""],
-            ["Participate in Hands-On Workshops, Design Collaborative Lessons", "90% of what they do", "Analyze, Define, Create, Evaluate"],
-            ["Simulate, Model, or Experience a Lesson, Design/Perform a Presentation — \"Do the Real Thing\"", "", ""],
-          ]}
-        />
+        <LearningPyramid levels={learningPyramidLevels} />
       </Section>
     </>
   );
