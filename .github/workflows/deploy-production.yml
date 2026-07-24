@@ -16,21 +16,23 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
-    name: Build & Deploy (GitHub Pages)
+  # ------------------------------------------------------------------
+  # JOB 1 — Build the site.
+  #
+  # This job ALWAYS runs (independent of GitHub Pages being configured).
+  # It uploads the finished SPA as a build artifact, so even if Pages
+  # isn't enabled yet you can still download the built site from the
+  # Actions run page and verify it locally.
+  # ------------------------------------------------------------------
+  build:
+    name: Build site
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      artifact: ${{ steps.upload-build.outputs.artifact-id }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # This project uses Bun as its package manager (committed lockfile
-      # is bun.lock, package-lock.json is gitignored) so we use the
-      # official Bun setup action and `bun install --frozen-lockfile`
-      # to get reproducible installs on CI. Node.js is still required
-      # because `bun run build:ghpages` invokes Vite under the hood.
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
@@ -71,22 +73,59 @@ jobs:
       - name: Create 404.html SPA fallback
         run: cp dist/index.html dist/404.html
 
-      # Copy favicon from public/ (the simple Vite config doesn't
-      # automatically serve public/ like the Start config does).
+      # Copy favicon (and anything else in public/) into dist/.
       - name: Include public assets
         run: |
           if [ -d public ]; then
             cp -R public/* dist/ 2>/dev/null || true
           fi
 
-      - name: Setup Pages
+      # Always-available build artifact — downloadable from the Actions
+      # run summary page even before GitHub Pages is enabled.
+      - name: Upload build artifact
+        id: upload-build
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-pages-site
+          path: ./dist
+          retention-days: 30
+
+      # Also upload in Pages' expected format for the deploy job below.
+      - name: Setup Pages artifact metadata
         uses: actions/configure-pages@v5
+        continue-on-error: true
+        id: pages-setup
 
       - name: Upload Pages artifact
+        if: steps.pages-setup.outcome == 'success'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
+  # ------------------------------------------------------------------
+  # JOB 2 — Deploy to GitHub Pages.
+  #
+  # This job depends on the build job above, and uses the official
+  # actions/deploy-pages action. If GitHub Pages is NOT yet enabled
+  # on the repo the run will surface a clear error but the overall
+  # workflow will still show Build as successful (because the site
+  # artifact is good and ready to go).
+  #
+  # HOW TO FIX THE "Get Pages site failed" ERROR:
+  #   1. Open https://github.com/<your-user>/<your-repo>/settings/pages
+  #   2. Under "Build and deployment" → "Source", select "GitHub Actions"
+  #   3. (Optional) Under "Custom domain" enter your domain if you
+  #      have one — otherwise you'll get https://<user>.github.io/<repo>/
+  #   4. Wait ~30 seconds, then re-run this workflow.
+  # ------------------------------------------------------------------
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
