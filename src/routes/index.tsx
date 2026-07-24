@@ -49,6 +49,9 @@ function Home() {
           <p className="mt-6 text-lg text-white/80 max-w-2xl leading-relaxed">
             Everything you need to design, assess and continuously improve an OBE curriculum aligned with the BAETE Accreditation Criteria v3.0 — the framework tables, the nine criteria, Modules 3 through 6, and the full SAR template, in one place.
           </p>
+          <p className="mt-3 text-sm text-white/60 max-w-2xl">
+            Training presented by <a href="https://www.baust.edu.bd/" target="_blank" rel="noreferrer" className="underline decoration-white/40 hover:text-white">Bangladesh Army University of Science and Technology, Saidpur (BAUST)</a>.
+          </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link to="/framework" className="inline-flex items-center gap-2 rounded-lg bg-accent text-accent-foreground px-5 py-3 text-sm font-semibold hover:opacity-90 transition">
               Explore the framework <ArrowRight className="h-4 w-4" />

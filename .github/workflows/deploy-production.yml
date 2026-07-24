@@ -1,0 +1,92 @@
+name: Deploy to Production (baust-obe-training)
+
+on:
+  push:
+    branches:
+      - PRODUCTION
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "production-deploy"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ vars.PRODUCTION_BASE_URL }}/baust-obe-training/
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build with production base path
+        env:
+          VITE_BASE_URL: /baust-obe-training/
+          BASE_URL: /baust-obe-training/
+        run: bun run build
+
+      # ============================================================
+      # DEPLOYMENT TARGET — Uncomment ONE section below
+      # ============================================================
+
+      # ---- OPTION A: Deploy via SCP/SFTP to your server ----
+      # - name: Deploy via SSH (SCP)
+      #   uses: appleboy/scp-action@v0.1.7
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USERNAME }}
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     port: 22
+      #     source: "dist/client/*"
+      #     target: "/var/www/baust-obe-training"
+      #     strip_components: 2
+
+      # ---- OPTION B: Deploy via FTP (cPanel / shared hosting) ----
+      # - name: Deploy via FTP
+      #   uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      #   with:
+      #     server: ${{ secrets.FTP_SERVER }}
+      #     username: ${{ secrets.FTP_USERNAME }}
+      #     password: ${{ secrets.FTP_PASSWORD }}
+      #     server-dir: /public_html/baust-obe-training/
+      #     local-dir: ./dist/client/
+      #     dangerous-clean-slate: true
+      #     exclude: "[.git*, .github*, node_modules*]"
+
+      # ---- OPTION C: Deploy to GitHub Pages ----
+      # (Also enable Pages in repo settings → Source: GitHub Actions)
+      # - name: Setup Pages
+      #   uses: actions/configure-pages@v5
+      #
+      # - name: Upload Pages artifact
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: ./dist/client
+      #
+      # - name: Deploy to GitHub Pages
+      #   id: pages-deploy
+      #   uses: actions/deploy-pages@v4
+
+      # ---- Fallback: Upload build as artifact for manual deploy ----
+      - name: Upload production build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-build
+          path: ./dist/client
+          retention-days: 30

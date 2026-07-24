@@ -109,7 +109,7 @@ export function SiteHeader() {
           </span>
           <span className="flex flex-col leading-none">
             <span className="font-display text-lg text-ink">OBE Training</span>
-            <span className="text-[10px] uppercase tracking-widest text-muted-foreground">BAETE · Outcome-Based Education</span>
+            <span className="text-[10px] uppercase tracking-widest text-muted-foreground">BAETE Accreditation Manual v3 · Presented by BAUST</span>
           </span>
         </Link>
 
@@ -193,6 +193,9 @@ export function SiteFooter() {
           <div className="font-display text-lg text-ink">OBE Training</div>
           <div className="text-sm text-muted-foreground mt-1 max-w-sm">
             Hands-on training reference for Outcome-Based Education and BAETE accreditation.
+          </div>
+          <div className="text-sm text-foreground/80 mt-2 max-w-sm">
+            Presented by <a href="https://www.baust.edu.bd/" target="_blank" rel="noreferrer" className="font-semibold text-primary hover:underline">Bangladesh Army University of Science and Technology (BAUST)</a>.
           </div>
         </div>
 
