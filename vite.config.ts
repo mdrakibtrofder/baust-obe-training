@@ -4,6 +4,10 @@
 //     nitro (build-only using cloudflare as a default target), VITE_* env injection, @ path alias,
 //     React/TanStack dedupe, error logger plugins, and sandbox detection (port/host/strictPort).
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
+//
+// NOTE: For GitHub Pages deployment we use the separate config "vite.ghpages.config.ts"
+// invoked via `npm run build:ghpages`. It builds a pure client-side SPA (no SSR)
+// so there is no need for Nitro / TanStack Start SSR plumbing.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({

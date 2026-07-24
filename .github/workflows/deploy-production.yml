@@ -1,0 +1,131 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # ------------------------------------------------------------------
+  # JOB 1 — Build the site.
+  #
+  # This job ALWAYS runs (independent of GitHub Pages being configured).
+  # It uploads the finished SPA as a build artifact, so even if Pages
+  # isn't enabled yet you can still download the built site from the
+  # Actions run page and verify it locally.
+  # ------------------------------------------------------------------
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+    outputs:
+      artifact: ${{ steps.upload-build.outputs.artifact-id }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      # ----------------------------------------------------------------
+      # Build the site as a pure client-side SPA using our simple
+      # vite.ghpages.config.ts (no TanStack Start / Nitro SSR).
+      #
+      # BASE_URL is set at build time so all asset URLs, internal <Link>
+      # hrefs, and router basepath use the correct project-site subpath.
+      #
+      # For project pages at https://<user>.github.io/<repo>/ the
+      # BASE_URL MUST match your repository name.
+      #
+      # This repo is currently named "baust-obe-training" so the default
+      # below uses /baust-obe-training/. If you rename the repo to
+      # "baust-obe-training" change this value to /baust-obe-training/.
+      # ----------------------------------------------------------------
+      - name: Build SPA
+        env:
+          BASE_URL: /baust-obe-training/
+        run: bun run build:ghpages
+
+      # SPA fallback trick for GitHub Pages: without this, deep links
+      # like /baust-obe-training/sar/criterion-3 return a 404 because
+      # Pages cannot find a matching static file. Copying index.html
+      # to 404.html makes Pages serve our SPA on every unknown route,
+      # then TanStack Router takes over and renders the right page.
+      - name: Create 404.html SPA fallback
+        run: cp dist/index.html dist/404.html
+
+      # Copy favicon (and anything else in public/) into dist/.
+      - name: Include public assets
+        run: |
+          if [ -d public ]; then
+            cp -R public/* dist/ 2>/dev/null || true
+          fi
+
+      # Always-available build artifact — downloadable from the Actions
+      # run summary page even before GitHub Pages is enabled.
+      - name: Upload build artifact
+        id: upload-build
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-pages-site
+          path: ./dist
+          retention-days: 30
+
+      # Also upload in Pages' expected format for the deploy job below.
+      - name: Setup Pages artifact metadata
+        uses: actions/configure-pages@v5
+        continue-on-error: true
+        id: pages-setup
+
+      - name: Upload Pages artifact
+        if: steps.pages-setup.outcome == 'success'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  # ------------------------------------------------------------------
+  # JOB 2 — Deploy to GitHub Pages.
+  #
+  # This job depends on the build job above, and uses the official
+  # actions/deploy-pages action. If GitHub Pages is NOT yet enabled
+  # on the repo the run will surface a clear error but the overall
+  # workflow will still show Build as successful (because the site
+  # artifact is good and ready to go).
+  #
+  # HOW TO FIX THE "Get Pages site failed" ERROR:
+  #   1. Open https://github.com/<your-user>/<your-repo>/settings/pages
+  #   2. Under "Build and deployment" → "Source", select "GitHub Actions"
+  #   3. (Optional) Under "Custom domain" enter your domain if you
+  #      have one — otherwise you'll get https://<user>.github.io/<repo>/
+  #   4. Wait ~30 seconds, then re-run this workflow.
+  # ------------------------------------------------------------------
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

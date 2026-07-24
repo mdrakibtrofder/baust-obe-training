@@ -1,6 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHeader, Section } from "@/components/site/layout";
-import { InfoCard, DataTable, BulletList } from "@/components/site/data-blocks";
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
+import { PageHeader, Section, RelatedPages } from "@/components/site/layout";
+import { InfoCard, DataTable, BulletList, StepList, PsychomotorGrid, CognitiveVerbGrid, LearningPyramid } from "@/components/site/data-blocks";
+import {
+  psychomotorDomainGrid, cognitiveActionVerbsGrid, learningPyramidLevels,
+  changesRequired, poCategory, cepCeaClassification, affectiveWorkedExamples,
+  embeddedControllerMapping, questionCoMapping, questionMappingGoodPractices,
+  digitalElectronicsLab, fydp, rubricWhy, rubricHow, poAssessmentWriteups,
+} from "@/lib/module-extras";
 
 export const Route = createFileRoute("/module-3")({
   head: () => ({
@@ -73,6 +81,23 @@ const smart = [
   { letter: "T", word: "Time-bound", note: "Achievable within the course timeframe." },
 ];
 
+function WriteupAccordion({ item, defaultOpen }: { item: { po: string; body: string[] }; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(!!defaultOpen);
+  return (
+    <div className="card-elev overflow-hidden">
+      <button onClick={() => setOpen((v) => !v)} className="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-secondary/40 transition-colors">
+        <span className="flex-1 font-display text-lg text-ink">{item.po}</span>
+        <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div className="px-5 pb-5 pt-1 border-t border-border">
+          <BulletList items={item.body} />
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Module3() {
   return (
     <>
@@ -100,11 +125,39 @@ function Module3() {
         <div className="mt-6"><InfoCard tone="accent"><p><em>OBE shifts emphasis from content delivery to demonstrable learner achievement.</em></p></InfoCard></div>
       </Section>
 
+      <Section eyebrow="Changes required" title="What has to change to move to OBE">
+        <div className="grid md:grid-cols-5 gap-4">
+          {changesRequired.map((c, i) => (
+            <div key={c.title} className="card-elev p-5">
+              <div className="font-display text-2xl text-accent">{String(i + 1).padStart(2, "0")}</div>
+              <div className="font-semibold text-ink mt-1">{c.title}</div>
+              <p className="text-xs text-foreground/75 mt-2 leading-relaxed">{c.text}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
       <Section eyebrow="Components" title="PEO · PO · CO — an aligned outcome system">
         <div className="grid md:grid-cols-3 gap-5">
           <InfoCard title="Program Educational Objectives (PEO)"><p>Attainment in about 5 years after graduation. Long-term graduate achievements.</p></InfoCard>
           <InfoCard title="Program Outcomes (PO)"><p>Attainment by the time of graduation. Graduate attributes required by the program.</p></InfoCard>
           <InfoCard title="Course Outcomes (CO)"><p>Upon completion of a course. Measurable knowledge, skills and attitudes.</p></InfoCard>
+        </div>
+      </Section>
+
+      <Section eyebrow="Program Outcomes" title="How the 12 POs group together">
+        <p className="text-sm text-foreground/80 mb-4">Every PO falls into one of three groups, each tied to a different part of the knowledge/complexity framework.</p>
+        <div className="space-y-5">
+          {poCategory.map((g) => (
+            <InfoCard key={g.group} title={g.group}>
+              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">{g.cep}</p>
+              <DataTable headers={["PO", "Label", "Knowledge Profile"]} rows={g.pos.map((p) => [p.code, p.label, p.wk])} />
+            </InfoCard>
+          ))}
+        </div>
+        <div className="mt-6">
+          <h3 className="font-display text-lg text-ink mb-3">PO classification: CEP · CEA · Neither</h3>
+          <DataTable headers={["PO", "Label", "Classification"]} rows={cepCeaClassification.map((p) => [p.code, p.label, p.tag])} />
         </div>
       </Section>
 
@@ -171,6 +224,21 @@ function Module3() {
         <div className="mt-4 text-sm text-muted-foreground">COs and assessments should indicate the desired level clearly.</div>
       </Section>
 
+      <Section eyebrow="CO cycle" title="Course Outcomes: wording matters">
+        <p className="text-sm text-foreground/80 mb-5 max-w-3xl">
+          Action verbs such as write, summarize and appraise connect to clear learning behavior more than understand or know. Specific learning outcomes help students understand the kind of learning they need to demonstrate. The instructor should ask: <em>what assessment or learning activity will help students reach the intended learning outcome?</em> Teaching, learning and assessment must be connected in a cycle.
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          {["Teaching", "Learning", "Students", "Assessment"].map((s, i, arr) => (
+            <div key={s} className="flex items-center gap-3">
+              <div className="card-elev px-5 py-3 font-semibold text-ink">{s}</div>
+              {i < arr.length - 1 && <span className="text-accent text-xl">→</span>}
+            </div>
+          ))}
+          <span className="text-accent text-xl">↺</span>
+        </div>
+      </Section>
+
       <Section eyebrow="SMART" title="How to write COs">
         <div className="grid md:grid-cols-5 gap-3">
           {smart.map((s) => (
@@ -204,6 +272,35 @@ function Module3() {
         />
       </Section>
 
+      <Section eyebrow="Worked example" title="CO-PO mapping — Embedded Controller Technology">
+        <DataTable
+          headers={["CO", "Course Outcome", "Domain"]}
+          rows={embeddedControllerMapping.cos.map((c) => [c.code, c.text, c.domain])}
+        />
+        <div className="mt-6 overflow-x-auto">
+          <table className="w-full text-sm card-elev">
+            <thead>
+              <tr className="bg-surface-2 border-b border-border">
+                <th className="text-left px-3 py-2 text-xs uppercase tracking-widest text-muted-foreground">CO</th>
+                {Array.from({ length: 12 }, (_, i) => (
+                  <th key={i} className="px-2 py-2 text-xs text-muted-foreground">PO{i + 1}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {embeddedControllerMapping.matrix.map((row) => (
+                <tr key={row[0] as string} className="border-b border-border last:border-b-0">
+                  <td className="px-3 py-2 font-semibold text-ink">{row[0]}</td>
+                  {row.slice(1).map((cell, i) => (
+                    <td key={i} className="px-2 py-2 text-center text-accent font-bold">{cell}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Section>
+
       <Section eyebrow="Cognitive" title="Learning activities and assessments">
         <DataTable headers={["Level", "Typical Learning Activities", "Assessment Examples"]} rows={cogActivities} />
       </Section>
@@ -212,8 +309,25 @@ function Module3() {
         <DataTable headers={["Level", "Core Meaning", "Example Verbs"]} rows={affective} />
       </Section>
 
+      <Section eyebrow="Worked examples" title="Affective domain: CO, activity and assessment by level">
+        <DataTable
+          headers={["Level", "Course Outcome", "Learning Activity", "Assessment"]}
+          rows={affectiveWorkedExamples.map((r) => [r.level, r.co, r.activity, r.assessment])}
+        />
+      </Section>
+
       <Section eyebrow="Bloom's — Psychomotor" title="Psychomotor domain: activities and assessments">
         <DataTable headers={["Level", "Learning Activities", "Assessment"]} rows={psychomotor} />
+      </Section>
+
+      <Section eyebrow="Psychomotor domain" title="Full definitions and action verbs (P1–P7)">
+        <p className="text-sm text-foreground/80 mb-4">Perception through Origination — the complete seven-category psychomotor scale with each category's description and its associated action verbs.</p>
+        <PsychomotorGrid rows={psychomotorDomainGrid} />
+      </Section>
+
+      <Section eyebrow="Cognitive domain" title="Action verbs by Bloom's level">
+        <p className="text-sm text-foreground/80 mb-4">A quick-reference verb bank for writing Course Outcomes and exam questions at the intended cognitive level.</p>
+        <CognitiveVerbGrid rows={cognitiveActionVerbsGrid} />
       </Section>
 
       <Section eyebrow="CO assessment" title="Assessment in theory and lab courses">
@@ -252,20 +366,73 @@ function Module3() {
         </div>
       </Section>
 
-      <Section eyebrow="Learning pyramid" title="People generally remember...">
-        <DataTable
-          headers={["Learning Activity", "Percentage Recalled", "Outcomes Enabled"]}
-          rows={[
-            ["Read", "10% of what they read", "Define, List, Describe, Explain"],
-            ["Hear", "20% of what they hear", ""],
-            ["View Images", "30% of what they see", ""],
-            ["Watch Videos, Attend Exhibits/Sites", "50% of what they see and hear", "Demonstrate, Apply, Practice"],
-            ["Watch a Demonstration", "70% of what they say and write", ""],
-            ["Participate in Hands-On Workshops, Design Collaborative Lessons", "90% of what they do", "Analyze, Define, Create, Evaluate"],
-            ["Simulate, Model, or Experience a Lesson, Design/Perform a Presentation — \"Do the Real Thing\"", "", ""],
-          ]}
-        />
+      <Section eyebrow="Question mapping" title="Mapping questions to COs">
+        <p className="text-sm text-foreground/80 mb-4">All assessments (CT, assignments, mid, final) that are considered for attainment must map to the COs. For mid/final examinations, mapping can be included with the question paper or question moderation form.</p>
+        <DataTable headers={["CO", "Mid", "Final", "Assignment"]} rows={questionCoMapping} />
+        <div className="mt-6">
+          <h3 className="font-display text-lg text-ink mb-3">Good practice</h3>
+          <BulletList items={questionMappingGoodPractices} />
+        </div>
       </Section>
+
+      <Section eyebrow="Worked example" title="CO assessment — Digital Electronics Lab">
+        <DataTable
+          headers={["CO", "Course Outcome", "Weight"]}
+          rows={digitalElectronicsLab.cos.map((c) => [c.code, c.text, c.pct])}
+        />
+        <div className="mt-6">
+          <h3 className="font-display text-lg text-ink mb-3">Assessment breakdown</h3>
+          <DataTable headers={["Assessment Item", "Weight"]} rows={digitalElectronicsLab.breakdown} />
+        </div>
+      </Section>
+
+      <Section eyebrow="Culminating course" title="Final Year Design Project (FYDP) / Capstone">
+        <BulletList items={fydp.why} />
+        <div className="mt-5">
+          <InfoCard title="Primary POs evidenced through the FYDP">
+            <div className="flex flex-wrap gap-2 mt-1">
+              {fydp.primaryPOs.map((po) => (
+                <span key={po} className="chip">{po}</span>
+              ))}
+            </div>
+          </InfoCard>
+        </div>
+        <div className="mt-5">
+          <InfoCard tone="warn"><p>{fydp.warning}</p></InfoCard>
+        </div>
+      </Section>
+
+      <Section eyebrow="Rubrics" title="Why and how to design a rubric">
+        <div className="grid md:grid-cols-2 gap-5">
+          <InfoCard title="Signs you need a rubric">
+            <BulletList items={rubricWhy} />
+          </InfoCard>
+          <div>
+            <h3 className="font-display text-lg text-ink mb-3">How to make a rubric</h3>
+            <StepList items={rubricHow} />
+          </div>
+        </div>
+      </Section>
+
+      <Section eyebrow="PO assessment" title="Worked write-ups: PO1, PO8, PO9">
+        <p className="text-sm text-foreground/80 mb-4">How a program should describe PO attainment in its SAR — one example with CEP embedded, one without, and one with CEA embedded.</p>
+        <div className="space-y-3">
+          {poAssessmentWriteups.map((item, i) => (
+            <WriteupAccordion key={item.po} item={item} defaultOpen={i === 0} />
+          ))}
+        </div>
+      </Section>
+
+      <Section eyebrow="Learning pyramid" title="People generally remember...">
+        <LearningPyramid levels={learningPyramidLevels} />
+      </Section>
+
+      <RelatedPages items={[
+        { to: "/module-5", label: "Module 5 · CEP & CEA", desc: "Worked examples embedding WP/EA attributes, including a full FYDP example." },
+        { to: "/module-6", label: "Module 6 · Outcome Attainment", desc: "Numeric worked examples for CO and PO attainment calculation." },
+        { to: "/framework", label: "Framework · WK/WP/EA tables & POs", desc: "The reference definitions this module's PO categorization builds on." },
+        { to: "/sar/criterion-2", label: "SAR · Criterion 2 attainment prompts", desc: "The exact PO1–PO12 write-up prompts a SAR must answer." },
+      ]} />
     </>
   );
 }

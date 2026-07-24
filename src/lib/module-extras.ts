@@ -367,3 +367,49 @@ export const bloomActionVerbs = {
     "Adapt, Build, Change, Choose, Combine, Compile, Compose, Construct, Create, Delete, Design, Develop, Discuss, Elaborate, Estimate, Formulate, Happen, Imagine, Improve, Invent, Make up, Maximize, Minimize, Modify, Original, Originate, Plan, Predict, Propose, Solution, Solve, Suppose, Test, Theory",
   ],
 };
+
+// ─── Image-sourced content (Module 3 slide deck) ───────────────────────────
+// Transcribed verbatim from three slide images: "Psychomotor Domain" (compact
+// 7-category grid), "Cognitive Domain: Action Verbs" (6-level verb grid),
+// and "The Learning Pyramid" infographic.
+
+export const psychomotorDomainGrid: {
+  code: string;
+  label: string;
+  desc: string;
+  verbs: string[];
+}[] = [
+  { code: "P1", label: "Perception", desc: "Use of senses to obtain clues", verbs: ["Choose", "Describe", "Detect", "Differentiate", "Distinguish", "Identify", "Isolate", "Relate", "Select", "Separate"] },
+  { code: "P2", label: "Set", desc: "Readiness to take action", verbs: ["Begin", "Display", "Explain", "Move", "Proceed", "React", "Respond", "Show", "Start", "Volunteer"] },
+  { code: "P3", label: "Guided Response", desc: "Knowledge of the steps required to perform a task", verbs: ["Assemble", "Build", "Calibrate", "Construct", "Dismantle", "Display", "Dissect", "Fasten", "Fix", "Grind", "Heat", "Manipulate", "Measure", "Mend", "Mix", "Organize", "Sketch", "Work"] },
+  { code: "P4", label: "Mechanism", desc: "Perform tasks in a habitual manner", verbs: ["Assemble", "Build", "Calibrate", "Construct", "Dismantle", "Display", "Dissect", "Fasten", "Fix", "Grind", "Heat", "Manipulate", "Measure", "Mend", "Mix", "Organize", "Sketch", "Work"] },
+  { code: "P5", label: "Complex Overt Response", desc: "Skillful performance of motor acts", verbs: ["Assemble", "Build", "Calibrate", "Construct", "Dismantle", "Display", "Dissect", "Fasten", "Fix", "Grind", "Heat", "Manipulate", "Measure", "Mend", "Mix", "Organize", "Sketch", "Work"] },
+  { code: "P6", label: "Adaptation", desc: "Skillful performance of motor acts and modification of movement in a problematic or new situation", verbs: ["Adapt", "Alter", "Change", "Rearrange", "Reorganize", "Revise", "Vary"] },
+  { code: "P7", label: "Origination", desc: "Creating new movement patterns for a problematic or new situation; creates new tasks that incorporate learned ones", verbs: ["Arrange", "Combine", "Compose", "Construct", "Design", "Originate"] },
+];
+
+export const cognitiveActionVerbsGrid: {
+  level: string;
+  verbs: string[];
+}[] = [
+  { level: "Remember", verbs: ["Cite", "Define", "Describe", "Draw", "Enumerate", "Identify", "Index", "Indicate", "Label", "List", "Match"] },
+  { level: "Understand", verbs: ["Add", "Approximate", "Articulate", "Associate", "Characterize", "Clarify", "Classify", "Compare", "Compute", "Contrast", "Convert"] },
+  { level: "Apply", verbs: ["Acquire", "Adapt", "Alphabetize", "Apply", "Ascertain", "Assign", "Attain", "Avoid", "Back up", "Calculate"] },
+  { level: "Analyze", verbs: ["Analyze", "Audit", "Blueprint", "Breadboard", "Break down", "Characterize", "Classify", "Compare", "Confirm", "Contrast", "Correlate"] },
+  { level: "Evaluate", verbs: ["Appraise", "Assess", "Compare", "Conclude", "Contrast", "Counsel", "Criticize", "Critique", "Defend", "Determine", "Discriminate"] },
+  { level: "Create", verbs: ["Abstract", "Animate", "Arrange", "Assemble", "Budget", "Categorize", "Code", "Combine", "Compile", "Compose", "Construct"] },
+];
+
+export const learningPyramidLevels: {
+  pct: number | null;
+  activity: string;
+  outcomes?: string;
+}[] = [
+  { pct: null, activity: "Simulate, Model, or Experience a Lesson, Design/Perform a Presentation — \"Do the Real Thing\"" },
+  { pct: 90, activity: "Participate in Hands-On Workshops, Design Collaborative Lessons", outcomes: "Analyze, Define, Create, Evaluate" },
+  { pct: 70, activity: "Watch a Demonstration", outcomes: "of what they say and write" },
+  { pct: 50, activity: "Watch Videos, Attend Exhibits/Sites", outcomes: "Demonstrate, Apply, Practice" },
+  { pct: 30, activity: "View Images", outcomes: "of what they see" },
+  { pct: 20, activity: "Hear", outcomes: "of what they hear" },
+  { pct: 10, activity: "Read", outcomes: "Define, List, Describe, Explain" },
+];

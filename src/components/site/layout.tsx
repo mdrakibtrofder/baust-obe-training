@@ -109,7 +109,7 @@ export function SiteHeader() {
           </span>
           <span className="flex flex-col leading-none">
             <span className="font-display text-lg text-ink">OBE Training</span>
-            <span className="text-[10px] uppercase tracking-widest text-muted-foreground">BAETE · Outcome-Based Education</span>
+            <span className="text-[10px] uppercase tracking-widest text-muted-foreground">BAETE Accreditation Manual v3 · Presented by BAUST</span>
           </span>
         </Link>
 
@@ -177,18 +177,50 @@ export function SiteHeader() {
   );
 }
 
+const importantLinks: { label: string; href: string }[] = [
+  { label: "BAETE", href: "https://www.baetebangladesh.org/" },
+  { label: "BAUST", href: "https://www.baust.edu.bd/" },
+  { label: "IQAC, BAUST", href: "https://baust.edu.bd/iqac/" },
+  { label: "Developer", href: "https://mdrakibtrofder.github.io/" },
+];
+
 export function SiteFooter() {
+  const year = new Date().getFullYear();
   return (
     <footer className="border-t border-border mt-24">
-      <div className="mx-auto max-w-7xl px-5 lg:px-8 py-10 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+      <div className="mx-auto max-w-7xl px-5 lg:px-8 py-10 flex flex-col md:flex-row gap-8 justify-between items-start">
         <div>
           <div className="font-display text-lg text-ink">OBE Training</div>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-muted-foreground mt-1 max-w-sm">
             Hands-on training reference for Outcome-Based Education and BAETE accreditation.
           </div>
+          <div className="text-sm text-foreground/80 mt-2 max-w-sm">
+            Presented by <a href="https://www.baust.edu.bd/" target="_blank" rel="noreferrer" className="font-semibold text-primary hover:underline">Bangladesh Army University of Science and Technology (BAUST)</a>.
+          </div>
         </div>
-        <div className="text-xs text-muted-foreground max-w-md md:text-right">
-          Content sourced verbatim from the BAETE Accreditation Criteria v3.0, PO Indicators (ACC-MAN-02-01), SAR Template (ACC-TMP-04-04-V3.0), and BAETE OBE Training Modules 3–6.
+
+        <div className="md:text-right">
+          <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold mb-2">Important Links</div>
+          <ul className="flex flex-col md:items-end gap-1.5">
+            {importantLinks.map((l) => (
+              <li key={l.label}>
+                <a
+                  href={l.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm text-foreground/80 hover:text-primary transition-colors"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className="border-t border-border">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8 py-5 text-center text-xs text-muted-foreground">
+          © {year} Bangladesh Army University of Science and Technology, Saidpur. All Rights Reserved.
         </div>
       </div>
     </footer>
@@ -251,6 +283,59 @@ export function Section({
       )}
       {children}
     </section>
+  );
+}
+
+const sarSequence: { to: string; label: string }[] = [
+  { to: "/sar", label: "Overview & Guidelines" },
+  { to: "/sar/criterion-1", label: "Criterion 1 · PEOs" },
+  { to: "/sar/criterion-2", label: "Criterion 2 · POs & Assessment" },
+  { to: "/sar/criterion-3", label: "Criterion 3 · Curriculum" },
+  { to: "/sar/criterion-4", label: "Criterion 4 · Industry" },
+  { to: "/sar/criterion-5", label: "Criterion 5 · CQI" },
+  { to: "/sar/criterion-6", label: "Criterion 6 · Students" },
+  { to: "/sar/criterion-7", label: "Criterion 7 · Faculty" },
+  { to: "/sar/criterion-8", label: "Criterion 8 · Governance, Finance & Safety" },
+  { to: "/sar/criterion-9", label: "Criterion 9 · Facilities" },
+  { to: "/sar/annexures", label: "Annexures A–M" },
+];
+
+/** Breadcrumb + progress strip + prev/next links shared by every /sar/* page. */
+export function SarCriterionNav({ current }: { current: string }) {
+  const idx = sarSequence.findIndex((s) => s.to === current);
+  const prev = idx > 0 ? sarSequence[idx - 1] : null;
+  const next = idx >= 0 && idx < sarSequence.length - 1 ? sarSequence[idx + 1] : null;
+  return (
+    <div className="mx-auto max-w-7xl px-5 lg:px-8 pt-6">
+      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+        <Link to="/" className="hover:text-foreground">Home</Link>
+        <span>/</span>
+        <Link to="/sar" className="hover:text-foreground">SAR Template</Link>
+        {idx > 0 && (
+          <>
+            <span>/</span>
+            <span className="text-foreground">{sarSequence[idx].label}</span>
+          </>
+        )}
+      </div>
+      {idx >= 0 && (
+        <div className="mt-2 text-xs uppercase tracking-widest text-muted-foreground">
+          {idx === 0 ? "Overview" : `Criterion ${idx} of 9`}
+        </div>
+      )}
+      <div className="mt-4 flex items-center justify-between gap-3 border-t border-b border-border py-3">
+        {prev ? (
+          <Link to={prev.to} className="text-sm font-medium text-primary hover:underline">
+            ← {prev.label}
+          </Link>
+        ) : <span />}
+        {next ? (
+          <Link to={next.to} className="text-sm font-medium text-primary hover:underline">
+            {next.label} →
+          </Link>
+        ) : <span />}
+      </div>
+    </div>
   );
 }
 

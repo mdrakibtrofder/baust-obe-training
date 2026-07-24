@@ -46,10 +46,15 @@ export const complexActivities = [
 ];
 
 export const modules = [
-  { slug: "framework", num: "Reference", title: "Engineering Accreditation Framework", tag: "Tables 6.1 · 6.2 · 6.3 · POs", desc: "The knowledge profile, complex problem-solving attributes, complex engineering activities, and the twelve Program Outcomes.", href: "/framework" },
-  { slug: "criteria", num: "Manual", title: "BAETE Accreditation Criteria v3.0", tag: "9 Criteria", desc: "The nine accreditation criteria used to evaluate an engineering program, from Program Educational Objectives through Academic Facilities.", href: "/criteria" },
-  { slug: "m3", num: "Module 3", title: "Outcome-Based Teaching, Learning & Assessment", tag: "Constructive Alignment", desc: "Bloom's taxonomy, SMART course outcomes, learning domains, and CO assessment for theory and lab courses.", href: "/module-3" },
-  { slug: "m4", num: "Module 4", title: "Continuous Quality Improvement", tag: "CQI Loop", desc: "Stakeholder feedback, analysis, records of evidence and closing the CQI loop across CO, PO and PEO.", href: "/module-4" },
-  { slug: "m5", num: "Module 5", title: "Complex Engineering Problems & Activities", tag: "CEP · CEA", desc: "Attributes of complex engineering problems, complex activities, and worked implementation examples.", href: "/module-5" },
-  { slug: "m6", num: "Module 6", title: "Outcome Attainment", tag: "CO · PO · PEO", desc: "Directives from the BAETE Manual and SAR Template on measuring CO, PO and PEO attainment and closing CQI loops.", href: "/module-6" },
+  { slug: "framework", num: "Reference", category: "Core Framework", title: "Engineering Accreditation Framework", tag: "Tables 6.1 · 6.2 · 6.3 · POs", desc: "The knowledge profile, complex problem-solving attributes, complex engineering activities, and the twelve Program Outcomes.", href: "/framework" },
+  { slug: "criteria", num: "Manual", category: "Core Framework", title: "BAETE Accreditation Criteria v3.0", tag: "9 Criteria", desc: "The nine accreditation criteria used to evaluate an engineering program, from Program Educational Objectives through Academic Facilities.", href: "/criteria" },
+  { slug: "m3", num: "Module 3", category: "Training Modules", title: "Outcome-Based Teaching, Learning & Assessment", tag: "Constructive Alignment", desc: "Bloom's taxonomy, SMART course outcomes, learning domains, and CO assessment for theory and lab courses.", href: "/module-3" },
+  { slug: "m4", num: "Module 4", category: "Training Modules", title: "Continuous Quality Improvement", tag: "CQI Loop", desc: "Stakeholder feedback, analysis, records of evidence and closing the CQI loop across CO, PO and PEO.", href: "/module-4" },
+  { slug: "m5", num: "Module 5", category: "Training Modules", title: "Complex Engineering Problems & Activities", tag: "CEP · CEA", desc: "Attributes of complex engineering problems, complex activities, and worked implementation examples.", href: "/module-5" },
+  { slug: "m6", num: "Module 6", category: "Training Modules", title: "Outcome Attainment", tag: "CO · PO · PEO", desc: "Directives from the BAETE Manual and SAR Template on measuring CO, PO and PEO attainment and closing CQI loops.", href: "/module-6" },
+  { slug: "sar", num: "Template", category: "SAR Template", title: "Self-Assessment Report (SAR)", tag: "9 Criteria · Annexures A–M", desc: "The full ACC-TMP-04-04-V3.0 template — every sub-point and table your program needs to report against, criterion by criterion.", href: "/sar" },
+  { slug: "po-indicators", num: "Reference", category: "SAR Template", title: "PO Indicators", tag: "Performance Indicators", desc: "Suggested sample performance indicators (a–l) for each of the twelve Program Outcomes.", href: "/po-indicators" },
+  { slug: "appendices", num: "Reference", category: "SAR Template", title: "Appendices", tag: "Bloom's + v2.2→v3.0", desc: "Bloom's Taxonomy action verbs across all three domains, plus the full v2.2 → v3.0 wording comparison for POs, WK, WP and EA.", href: "/appendices" },
 ];
+
+export const moduleCategories = ["Core Framework", "Training Modules", "SAR Template"] as const;

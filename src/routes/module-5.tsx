@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHeader, Section } from "@/components/site/layout";
-import { InfoCard, DataTable, BulletList } from "@/components/site/data-blocks";
-import { AttributeTable } from "@/components/site/data-blocks";
+import { PageHeader, Section, RelatedPages } from "@/components/site/layout";
+import { InfoCard, DataTable, BulletList, AttributeTable, MappingMatrix, WorkedExampleCard } from "@/components/site/data-blocks";
 import { complexProblems, complexActivities, knowledgeProfile } from "@/lib/obe-data";
+import { complicatedVsComplexPrompts, ceaGroupWorkPrompt, mappingMatrixCourses, mappingMatrix, workedExamples } from "@/lib/module-extras";
 
 export const Route = createFileRoute("/module-5")({
   head: () => ({
@@ -89,10 +89,44 @@ function Module5() {
             ]} />
           </InfoCard>
         </div>
+        <div className="mt-6">
+          <h3 className="font-display text-lg text-ink mb-3">Discussion prompts — which of these are complex, complicated, or both?</h3>
+          <DataTable
+            headers={["Scenario", "Complicated?", "Complex?"]}
+            rows={complicatedVsComplexPrompts.map((p) => [p.title, p.complicated, p.complex])}
+          />
+        </div>
+        <div className="mt-5">
+          <InfoCard tone="accent" title="Discuss">
+            <p>{ceaGroupWorkPrompt}</p>
+          </InfoCard>
+        </div>
       </Section>
 
       <Section eyebrow="Table (EA)" title="Range of Complex Engineering Activities">
         <AttributeTable headers={["Code","Attribute"]} rows={complexActivities} accent="accent" />
+      </Section>
+
+      <Section eyebrow="Mapping example" title="Course × PO × WK × WP × EA mapping matrix">
+        <p className="text-sm text-foreground/80 mb-4">A worked example of how a program maps its courses (including the FYDP) against all 12 POs, 9 Knowledge Profile attributes, 7 Complex Engineering Problem-solving attributes, and 5 Complex Engineering Activities.</p>
+        <MappingMatrix courses={mappingMatrixCourses} data={mappingMatrix} />
+      </Section>
+
+      <Section eyebrow="Worked examples" title="Four worked examples from practice">
+        <p className="text-sm text-foreground/80 mb-4">Click each example to see the full brief and which WP/EA attributes it addresses, with justification.</p>
+        <div className="space-y-3">
+          {workedExamples.map((ex, i) => (
+            <WorkedExampleCard
+              key={ex.id}
+              title={ex.title}
+              brief={ex.brief}
+              wps={ex.wps}
+              eas={ex.eas}
+              thinkingList={ex.thinkingList}
+              defaultOpen={i === 0}
+            />
+          ))}
+        </div>
       </Section>
 
       <Section eyebrow="Implementation" title="How and when to implement CEP and CEA">
@@ -129,6 +163,12 @@ function Module5() {
           ]} />
         </div>
       </Section>
+
+      <RelatedPages items={[
+        { to: "/module-3", label: "Module 3 · FYDP & PO assessment", desc: "Why the Final Year Design Project is central to OBE, and worked PO write-ups." },
+        { to: "/module-6", label: "Module 6 · Outcome Attainment", desc: "How CEP/CEA-embedded POs are measured and calculated." },
+        { to: "/framework", label: "Framework · WK/WP/EA tables", desc: "The full reference definitions this module builds on." },
+      ]} />
     </>
   );
 }
