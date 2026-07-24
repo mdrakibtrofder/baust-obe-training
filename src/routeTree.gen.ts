@@ -9,49 +9,30 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PoIndicatorsRouteImport } from './routes/po-indicators'
-import { Route as Module6RouteImport } from './routes/module-6'
-import { Route as Module5RouteImport } from './routes/module-5'
-import { Route as Module4RouteImport } from './routes/module-4'
-import { Route as Module3RouteImport } from './routes/module-3'
-import { Route as FrameworkRouteImport } from './routes/framework'
-import { Route as CriteriaRouteImport } from './routes/criteria'
-import { Route as AppendicesRouteImport } from './routes/appendices'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppendicesRouteImport } from './routes/appendices'
+import { Route as CriteriaRouteImport } from './routes/criteria'
+import { Route as FrameworkRouteImport } from './routes/framework'
+import { Route as Module3RouteImport } from './routes/module-3'
+import { Route as Module4RouteImport } from './routes/module-4'
+import { Route as Module5RouteImport } from './routes/module-5'
+import { Route as Module6RouteImport } from './routes/module-6'
+import { Route as PoIndicatorsRouteImport } from './routes/po-indicators'
+import { Route as SarIndexRouteImport } from './routes/sar/index'
+import { Route as SarAnnexuresRouteImport } from './routes/sar/annexures'
+import { Route as SarCriterion1RouteImport } from './routes/sar/criterion-1'
+import { Route as SarCriterion2RouteImport } from './routes/sar/criterion-2'
+import { Route as SarCriterion3RouteImport } from './routes/sar/criterion-3'
+import { Route as SarCriterion4RouteImport } from './routes/sar/criterion-4'
+import { Route as SarCriterion5RouteImport } from './routes/sar/criterion-5'
+import { Route as SarCriterion6RouteImport } from './routes/sar/criterion-6'
+import { Route as SarCriterion7RouteImport } from './routes/sar/criterion-7'
+import { Route as SarCriterion8RouteImport } from './routes/sar/criterion-8'
+import { Route as SarCriterion9RouteImport } from './routes/sar/criterion-9'
 
-const PoIndicatorsRoute = PoIndicatorsRouteImport.update({
-  id: '/po-indicators',
-  path: '/po-indicators',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Module6Route = Module6RouteImport.update({
-  id: '/module-6',
-  path: '/module-6',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Module5Route = Module5RouteImport.update({
-  id: '/module-5',
-  path: '/module-5',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Module4Route = Module4RouteImport.update({
-  id: '/module-4',
-  path: '/module-4',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Module3Route = Module3RouteImport.update({
-  id: '/module-3',
-  path: '/module-3',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FrameworkRoute = FrameworkRouteImport.update({
-  id: '/framework',
-  path: '/framework',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CriteriaRoute = CriteriaRouteImport.update({
-  id: '/criteria',
-  path: '/criteria',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppendicesRoute = AppendicesRouteImport.update({
@@ -59,9 +40,94 @@ const AppendicesRoute = AppendicesRouteImport.update({
   path: '/appendices',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const CriteriaRoute = CriteriaRouteImport.update({
+  id: '/criteria',
+  path: '/criteria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FrameworkRoute = FrameworkRouteImport.update({
+  id: '/framework',
+  path: '/framework',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Module3Route = Module3RouteImport.update({
+  id: '/module-3',
+  path: '/module-3',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Module4Route = Module4RouteImport.update({
+  id: '/module-4',
+  path: '/module-4',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Module5Route = Module5RouteImport.update({
+  id: '/module-5',
+  path: '/module-5',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Module6Route = Module6RouteImport.update({
+  id: '/module-6',
+  path: '/module-6',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoIndicatorsRoute = PoIndicatorsRouteImport.update({
+  id: '/po-indicators',
+  path: '/po-indicators',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SarIndexRoute = SarIndexRouteImport.update({
+  id: '/sar/',
+  path: '/sar/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SarAnnexuresRoute = SarAnnexuresRouteImport.update({
+  id: '/sar/annexures',
+  path: '/sar/annexures',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SarCriterion1Route = SarCriterion1RouteImport.update({
+  id: '/sar/criterion-1',
+  path: '/sar/criterion-1',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SarCriterion2Route = SarCriterion2RouteImport.update({
+  id: '/sar/criterion-2',
+  path: '/sar/criterion-2',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SarCriterion3Route = SarCriterion3RouteImport.update({
+  id: '/sar/criterion-3',
+  path: '/sar/criterion-3',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SarCriterion4Route = SarCriterion4RouteImport.update({
+  id: '/sar/criterion-4',
+  path: '/sar/criterion-4',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SarCriterion5Route = SarCriterion5RouteImport.update({
+  id: '/sar/criterion-5',
+  path: '/sar/criterion-5',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SarCriterion6Route = SarCriterion6RouteImport.update({
+  id: '/sar/criterion-6',
+  path: '/sar/criterion-6',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SarCriterion7Route = SarCriterion7RouteImport.update({
+  id: '/sar/criterion-7',
+  path: '/sar/criterion-7',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SarCriterion8Route = SarCriterion8RouteImport.update({
+  id: '/sar/criterion-8',
+  path: '/sar/criterion-8',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SarCriterion9Route = SarCriterion9RouteImport.update({
+  id: '/sar/criterion-9',
+  path: '/sar/criterion-9',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -75,6 +141,17 @@ export interface FileRoutesByFullPath {
   '/module-5': typeof Module5Route
   '/module-6': typeof Module6Route
   '/po-indicators': typeof PoIndicatorsRoute
+  '/sar/annexures': typeof SarAnnexuresRoute
+  '/sar/criterion-1': typeof SarCriterion1Route
+  '/sar/criterion-2': typeof SarCriterion2Route
+  '/sar/criterion-3': typeof SarCriterion3Route
+  '/sar/criterion-4': typeof SarCriterion4Route
+  '/sar/criterion-5': typeof SarCriterion5Route
+  '/sar/criterion-6': typeof SarCriterion6Route
+  '/sar/criterion-7': typeof SarCriterion7Route
+  '/sar/criterion-8': typeof SarCriterion8Route
+  '/sar/criterion-9': typeof SarCriterion9Route
+  '/sar/': typeof SarIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +163,17 @@ export interface FileRoutesByTo {
   '/module-5': typeof Module5Route
   '/module-6': typeof Module6Route
   '/po-indicators': typeof PoIndicatorsRoute
+  '/sar/annexures': typeof SarAnnexuresRoute
+  '/sar/criterion-1': typeof SarCriterion1Route
+  '/sar/criterion-2': typeof SarCriterion2Route
+  '/sar/criterion-3': typeof SarCriterion3Route
+  '/sar/criterion-4': typeof SarCriterion4Route
+  '/sar/criterion-5': typeof SarCriterion5Route
+  '/sar/criterion-6': typeof SarCriterion6Route
+  '/sar/criterion-7': typeof SarCriterion7Route
+  '/sar/criterion-8': typeof SarCriterion8Route
+  '/sar/criterion-9': typeof SarCriterion9Route
+  '/sar': typeof SarIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +186,17 @@ export interface FileRoutesById {
   '/module-5': typeof Module5Route
   '/module-6': typeof Module6Route
   '/po-indicators': typeof PoIndicatorsRoute
+  '/sar/annexures': typeof SarAnnexuresRoute
+  '/sar/criterion-1': typeof SarCriterion1Route
+  '/sar/criterion-2': typeof SarCriterion2Route
+  '/sar/criterion-3': typeof SarCriterion3Route
+  '/sar/criterion-4': typeof SarCriterion4Route
+  '/sar/criterion-5': typeof SarCriterion5Route
+  '/sar/criterion-6': typeof SarCriterion6Route
+  '/sar/criterion-7': typeof SarCriterion7Route
+  '/sar/criterion-8': typeof SarCriterion8Route
+  '/sar/criterion-9': typeof SarCriterion9Route
+  '/sar/': typeof SarIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +210,17 @@ export interface FileRouteTypes {
     | '/module-5'
     | '/module-6'
     | '/po-indicators'
+    | '/sar/annexures'
+    | '/sar/criterion-1'
+    | '/sar/criterion-2'
+    | '/sar/criterion-3'
+    | '/sar/criterion-4'
+    | '/sar/criterion-5'
+    | '/sar/criterion-6'
+    | '/sar/criterion-7'
+    | '/sar/criterion-8'
+    | '/sar/criterion-9'
+    | '/sar/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +232,17 @@ export interface FileRouteTypes {
     | '/module-5'
     | '/module-6'
     | '/po-indicators'
+    | '/sar/annexures'
+    | '/sar/criterion-1'
+    | '/sar/criterion-2'
+    | '/sar/criterion-3'
+    | '/sar/criterion-4'
+    | '/sar/criterion-5'
+    | '/sar/criterion-6'
+    | '/sar/criterion-7'
+    | '/sar/criterion-8'
+    | '/sar/criterion-9'
+    | '/sar'
   id:
     | '__root__'
     | '/'
@@ -133,6 +254,17 @@ export interface FileRouteTypes {
     | '/module-5'
     | '/module-6'
     | '/po-indicators'
+    | '/sar/annexures'
+    | '/sar/criterion-1'
+    | '/sar/criterion-2'
+    | '/sar/criterion-3'
+    | '/sar/criterion-4'
+    | '/sar/criterion-5'
+    | '/sar/criterion-6'
+    | '/sar/criterion-7'
+    | '/sar/criterion-8'
+    | '/sar/criterion-9'
+    | '/sar/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -145,57 +277,26 @@ export interface RootRouteChildren {
   Module5Route: typeof Module5Route
   Module6Route: typeof Module6Route
   PoIndicatorsRoute: typeof PoIndicatorsRoute
+  SarAnnexuresRoute: typeof SarAnnexuresRoute
+  SarCriterion1Route: typeof SarCriterion1Route
+  SarCriterion2Route: typeof SarCriterion2Route
+  SarCriterion3Route: typeof SarCriterion3Route
+  SarCriterion4Route: typeof SarCriterion4Route
+  SarCriterion5Route: typeof SarCriterion5Route
+  SarCriterion6Route: typeof SarCriterion6Route
+  SarCriterion7Route: typeof SarCriterion7Route
+  SarCriterion8Route: typeof SarCriterion8Route
+  SarCriterion9Route: typeof SarCriterion9Route
+  SarIndexRoute: typeof SarIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/po-indicators': {
-      id: '/po-indicators'
-      path: '/po-indicators'
-      fullPath: '/po-indicators'
-      preLoaderRoute: typeof PoIndicatorsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/module-6': {
-      id: '/module-6'
-      path: '/module-6'
-      fullPath: '/module-6'
-      preLoaderRoute: typeof Module6RouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/module-5': {
-      id: '/module-5'
-      path: '/module-5'
-      fullPath: '/module-5'
-      preLoaderRoute: typeof Module5RouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/module-4': {
-      id: '/module-4'
-      path: '/module-4'
-      fullPath: '/module-4'
-      preLoaderRoute: typeof Module4RouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/module-3': {
-      id: '/module-3'
-      path: '/module-3'
-      fullPath: '/module-3'
-      preLoaderRoute: typeof Module3RouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/framework': {
-      id: '/framework'
-      path: '/framework'
-      fullPath: '/framework'
-      preLoaderRoute: typeof FrameworkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/criteria': {
-      id: '/criteria'
-      path: '/criteria'
-      fullPath: '/criteria'
-      preLoaderRoute: typeof CriteriaRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/appendices': {
@@ -205,11 +306,130 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppendicesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/criteria': {
+      id: '/criteria'
+      path: '/criteria'
+      fullPath: '/criteria'
+      preLoaderRoute: typeof CriteriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/framework': {
+      id: '/framework'
+      path: '/framework'
+      fullPath: '/framework'
+      preLoaderRoute: typeof FrameworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/module-3': {
+      id: '/module-3'
+      path: '/module-3'
+      fullPath: '/module-3'
+      preLoaderRoute: typeof Module3RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/module-4': {
+      id: '/module-4'
+      path: '/module-4'
+      fullPath: '/module-4'
+      preLoaderRoute: typeof Module4RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/module-5': {
+      id: '/module-5'
+      path: '/module-5'
+      fullPath: '/module-5'
+      preLoaderRoute: typeof Module5RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/module-6': {
+      id: '/module-6'
+      path: '/module-6'
+      fullPath: '/module-6'
+      preLoaderRoute: typeof Module6RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/po-indicators': {
+      id: '/po-indicators'
+      path: '/po-indicators'
+      fullPath: '/po-indicators'
+      preLoaderRoute: typeof PoIndicatorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sar/': {
+      id: '/sar/'
+      path: '/sar'
+      fullPath: '/sar/'
+      preLoaderRoute: typeof SarIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sar/annexures': {
+      id: '/sar/annexures'
+      path: '/sar/annexures'
+      fullPath: '/sar/annexures'
+      preLoaderRoute: typeof SarAnnexuresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sar/criterion-1': {
+      id: '/sar/criterion-1'
+      path: '/sar/criterion-1'
+      fullPath: '/sar/criterion-1'
+      preLoaderRoute: typeof SarCriterion1RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sar/criterion-2': {
+      id: '/sar/criterion-2'
+      path: '/sar/criterion-2'
+      fullPath: '/sar/criterion-2'
+      preLoaderRoute: typeof SarCriterion2RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sar/criterion-3': {
+      id: '/sar/criterion-3'
+      path: '/sar/criterion-3'
+      fullPath: '/sar/criterion-3'
+      preLoaderRoute: typeof SarCriterion3RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sar/criterion-4': {
+      id: '/sar/criterion-4'
+      path: '/sar/criterion-4'
+      fullPath: '/sar/criterion-4'
+      preLoaderRoute: typeof SarCriterion4RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sar/criterion-5': {
+      id: '/sar/criterion-5'
+      path: '/sar/criterion-5'
+      fullPath: '/sar/criterion-5'
+      preLoaderRoute: typeof SarCriterion5RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sar/criterion-6': {
+      id: '/sar/criterion-6'
+      path: '/sar/criterion-6'
+      fullPath: '/sar/criterion-6'
+      preLoaderRoute: typeof SarCriterion6RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sar/criterion-7': {
+      id: '/sar/criterion-7'
+      path: '/sar/criterion-7'
+      fullPath: '/sar/criterion-7'
+      preLoaderRoute: typeof SarCriterion7RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sar/criterion-8': {
+      id: '/sar/criterion-8'
+      path: '/sar/criterion-8'
+      fullPath: '/sar/criterion-8'
+      preLoaderRoute: typeof SarCriterion8RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sar/criterion-9': {
+      id: '/sar/criterion-9'
+      path: '/sar/criterion-9'
+      fullPath: '/sar/criterion-9'
+      preLoaderRoute: typeof SarCriterion9RouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -225,7 +445,28 @@ const rootRouteChildren: RootRouteChildren = {
   Module5Route: Module5Route,
   Module6Route: Module6Route,
   PoIndicatorsRoute: PoIndicatorsRoute,
+  SarAnnexuresRoute: SarAnnexuresRoute,
+  SarCriterion1Route: SarCriterion1Route,
+  SarCriterion2Route: SarCriterion2Route,
+  SarCriterion3Route: SarCriterion3Route,
+  SarCriterion4Route: SarCriterion4Route,
+  SarCriterion5Route: SarCriterion5Route,
+  SarCriterion6Route: SarCriterion6Route,
+  SarCriterion7Route: SarCriterion7Route,
+  SarCriterion8Route: SarCriterion8Route,
+  SarCriterion9Route: SarCriterion9Route,
+  SarIndexRoute: SarIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
