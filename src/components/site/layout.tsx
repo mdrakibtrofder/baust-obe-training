@@ -9,6 +9,7 @@ const topNav: NavItem[] = [
   { to: "/", label: "Home" },
   { to: "/framework", label: "Framework" },
   { to: "/criteria", label: "Criteria" },
+  { to: "/resources", label: "Resources" },
 ];
 
 const modulesGroup: NavGroup = {

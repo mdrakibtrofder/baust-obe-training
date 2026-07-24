@@ -18,6 +18,7 @@ import { Route as Module4RouteImport } from './routes/module-4'
 import { Route as Module5RouteImport } from './routes/module-5'
 import { Route as Module6RouteImport } from './routes/module-6'
 import { Route as PoIndicatorsRouteImport } from './routes/po-indicators'
+import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SarIndexRouteImport } from './routes/sar/index'
 import { Route as SarAnnexuresRouteImport } from './routes/sar/annexures'
 import { Route as SarCriterion1RouteImport } from './routes/sar/criterion-1'
@@ -73,6 +74,11 @@ const Module6Route = Module6RouteImport.update({
 const PoIndicatorsRoute = PoIndicatorsRouteImport.update({
   id: '/po-indicators',
   path: '/po-indicators',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SarIndexRoute = SarIndexRouteImport.update({
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/module-5': typeof Module5Route
   '/module-6': typeof Module6Route
   '/po-indicators': typeof PoIndicatorsRoute
+  '/resources': typeof ResourcesRoute
   '/sar/annexures': typeof SarAnnexuresRoute
   '/sar/criterion-1': typeof SarCriterion1Route
   '/sar/criterion-2': typeof SarCriterion2Route
@@ -163,6 +170,7 @@ export interface FileRoutesByTo {
   '/module-5': typeof Module5Route
   '/module-6': typeof Module6Route
   '/po-indicators': typeof PoIndicatorsRoute
+  '/resources': typeof ResourcesRoute
   '/sar/annexures': typeof SarAnnexuresRoute
   '/sar/criterion-1': typeof SarCriterion1Route
   '/sar/criterion-2': typeof SarCriterion2Route
@@ -186,6 +194,7 @@ export interface FileRoutesById {
   '/module-5': typeof Module5Route
   '/module-6': typeof Module6Route
   '/po-indicators': typeof PoIndicatorsRoute
+  '/resources': typeof ResourcesRoute
   '/sar/annexures': typeof SarAnnexuresRoute
   '/sar/criterion-1': typeof SarCriterion1Route
   '/sar/criterion-2': typeof SarCriterion2Route
@@ -210,6 +219,7 @@ export interface FileRouteTypes {
     | '/module-5'
     | '/module-6'
     | '/po-indicators'
+    | '/resources'
     | '/sar/annexures'
     | '/sar/criterion-1'
     | '/sar/criterion-2'
@@ -232,6 +242,7 @@ export interface FileRouteTypes {
     | '/module-5'
     | '/module-6'
     | '/po-indicators'
+    | '/resources'
     | '/sar/annexures'
     | '/sar/criterion-1'
     | '/sar/criterion-2'
@@ -254,6 +265,7 @@ export interface FileRouteTypes {
     | '/module-5'
     | '/module-6'
     | '/po-indicators'
+    | '/resources'
     | '/sar/annexures'
     | '/sar/criterion-1'
     | '/sar/criterion-2'
@@ -277,6 +289,7 @@ export interface RootRouteChildren {
   Module5Route: typeof Module5Route
   Module6Route: typeof Module6Route
   PoIndicatorsRoute: typeof PoIndicatorsRoute
+  ResourcesRoute: typeof ResourcesRoute
   SarAnnexuresRoute: typeof SarAnnexuresRoute
   SarCriterion1Route: typeof SarCriterion1Route
   SarCriterion2Route: typeof SarCriterion2Route
@@ -353,6 +366,13 @@ declare module '@tanstack/react-router' {
       path: '/po-indicators'
       fullPath: '/po-indicators'
       preLoaderRoute: typeof PoIndicatorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sar/': {
@@ -445,6 +465,7 @@ const rootRouteChildren: RootRouteChildren = {
   Module5Route: Module5Route,
   Module6Route: Module6Route,
   PoIndicatorsRoute: PoIndicatorsRoute,
+  ResourcesRoute: ResourcesRoute,
   SarAnnexuresRoute: SarAnnexuresRoute,
   SarCriterion1Route: SarCriterion1Route,
   SarCriterion2Route: SarCriterion2Route,
