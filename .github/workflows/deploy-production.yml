@@ -1,10 +1,9 @@
-name: Deploy to Production (GitHub Pages)
+name: Deploy to GitHub Pages (PRODUCTION branch)
 
 on:
   push:
     branches:
       - PRODUCTION
-
   workflow_dispatch:
 
 permissions:
@@ -13,39 +12,63 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "production-deploy"
+  group: "pages"
   cancel-in-progress: false
 
 jobs:
   build-and-deploy:
-    name: Build & Deploy
+    name: Build & Deploy (GitHub Pages)
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.pages-deploy.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          bun-version: latest
+          node-version: 22
+          cache: "npm"
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: npm ci
 
-      # NOTE: GitHub Pages project sites are served from
-      # https://<username>.github.io/<repo-name>/ — this base path MUST match
-      # this repository's actual name. This repo is currently named
-      # "obe-training-hub", so the base path below is "/obe-training-hub/".
-      # If you rename the GitHub repo to "baust-obe-training", change both
-      # values below to "/baust-obe-training/" to match.
-      - name: Build with production base path
+      # ----------------------------------------------------------------
+      # Build the site as a pure client-side SPA using our simple
+      # vite.ghpages.config.ts (no TanStack Start / Nitro SSR).
+      #
+      # BASE_URL is set at build time so all asset URLs, internal <Link>
+      # hrefs, and router basepath use the correct project-site subpath.
+      #
+      # For project pages at https://<user>.github.io/<repo>/ the
+      # BASE_URL MUST match your repository name.
+      #
+      # This repo is currently named "obe-training-hub" so the default
+      # below uses /obe-training-hub/. If you rename the repo to
+      # "baust-obe-training" change this value to /baust-obe-training/.
+      # ----------------------------------------------------------------
+      - name: Build SPA
         env:
-          VITE_BASE_URL: /obe-training-hub/
           BASE_URL: /obe-training-hub/
-        run: bun run build
+        run: npm run build:ghpages
+
+      # SPA fallback trick for GitHub Pages: without this, deep links
+      # like /obe-training-hub/sar/criterion-3 return a 404 because
+      # Pages cannot find a matching static file. Copying index.html
+      # to 404.html makes Pages serve our SPA on every unknown route,
+      # then TanStack Router takes over and renders the right page.
+      - name: Create 404.html SPA fallback
+        run: cp dist/index.html dist/404.html
+
+      # Copy favicon from public/ (the simple Vite config doesn't
+      # automatically serve public/ like the Start config does).
+      - name: Include public assets
+        run: |
+          if [ -d public ]; then
+            cp -R public/* dist/ 2>/dev/null || true
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -53,8 +76,8 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist/client
+          path: ./dist
 
       - name: Deploy to GitHub Pages
-        id: pages-deploy
+        id: deployment
         uses: actions/deploy-pages@v4
